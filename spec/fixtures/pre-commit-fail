@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+require 'captain_hoog'
+
+plugins_path = File.expand_path(File.join(File.dirname(__FILE__),
+                                          "test_plugins",
+                                          "failing"))
+
+CaptainHoog::PreGit.plugins_dir = plugins_path
+CaptainHoog::PreGit.run
