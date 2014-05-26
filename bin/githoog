@@ -1,0 +1,43 @@
+#!/usr/bin/env ruby
+
+require 'thor'
+require 'colorize'
+
+class GitHookInstall < Thor
+  include Thor::Actions
+
+  def self.exit_on_failure?
+    true
+  end
+
+  def self.source_root
+    File.join(File.dirname(__FILE__),"..", "lib", "captain_hoog", "templates")
+  end
+
+  option :type, type: :string, default: 'pre-commit'
+
+  desc "install","Install the hook into your Git repository"
+  def install
+    if not is_git_repository?
+      puts "I can't detect a Git repository".red
+      raise Thor::Error
+    else
+      install_hook(as: options[:type])
+      puts "Installed hook as #{options[:type]} hook".green
+    end
+  end
+
+  private
+
+  def is_git_repository?
+   File.exists?(File.join(Dir.getwd, ".git"))
+  end
+
+  def install_hook(config)
+    template("install.erb",
+             File.join(Dir.getwd, ".git", "hooks", config[:as]))
+  end
+
+end
+
+GitHookInstall.start(ARGV)
