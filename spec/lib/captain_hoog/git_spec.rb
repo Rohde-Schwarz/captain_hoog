@@ -22,6 +22,10 @@ describe CaptainHoog::Git do
       expect(subject).to respond_to(:env=)
     end
 
+    it "has #helper method" do
+      expect(subject).to respond_to(:helper)
+    end
+
     describe "#test" do
 
       context "returning a non boolean value" do
@@ -70,6 +74,46 @@ describe CaptainHoog::Git do
               "Foo"
             end
           end.not_to raise_error
+        end
+
+      end
+
+    end
+
+    describe "#helper" do
+
+      let(:git){ CaptainHoog::Git.new }
+
+      before do
+        git.helper :my_helper do
+
+        end
+      end
+
+      it "defines a helper method with a given name" do
+        expect(git).to respond_to(:my_helper)
+      end
+
+      context "passing variables to the helper" do
+
+        before do
+          git.helper :my_helper_with_vars do |a|
+            a
+          end
+
+          git.helper :setter= do |a|
+
+          end
+        end
+
+        it "variables will be evaluated" do
+          expect do
+            git.my_helper_with_vars
+          end.to raise_error ArgumentError
+          expect do
+            git.setter=22
+          end.to_not raise_error
+          expect(git.my_helper_with_vars(19)).to eq 19
         end
 
       end

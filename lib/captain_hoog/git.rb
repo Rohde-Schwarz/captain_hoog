@@ -21,5 +21,9 @@ module CaptainHoog
       end
     end
 
+    def helper(name,&block)
+      self.class.send(:define_method, name, &block)
+    end
+
   end
 end
