@@ -7,5 +7,10 @@ plugins_path = File.expand_path(File.join(File.dirname(__FILE__),
                                                    "..",
                                                    "plugins"))
 
-CaptainHoog::PreGit.plugins_dir = plugins_path
-CaptainHoog::PreGit.run
+# Adjust settings
+CaptainHoog::PreGit.configure do |config|
+  config.plugins_dir =  "<%= config[:plugins_dir] %>"
+  config.project_dir = "<%= config[:project_dir] %>"
+  #config.headline_on_success = "All is fine."
+  #config.headline_on_failure = "Oops. Something went wrong"
+end
