@@ -4,19 +4,28 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'captain_hoog/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "captain_hoog"
-  spec.version       = CaptainHoog::VERSION
-  spec.authors       = ["Daniel Schmidt"]
-  spec.email         = ["daniel.schmidt@adytonsystems.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
-  spec.license       = "MIT"
+  spec.name                 = "captain_hoog"
+  spec.version              = CaptainHoog::VERSION
+  spec.authors              = ["Daniel Schmidt"]
+  spec.email                = ["daniel.schmidt@adytonsystems.com"]
+  spec.summary              = %q{TODO: Write a short summary. Required.}
+  spec.description          = %q{TODO: Write a longer description. Optional.}
+  spec.homepage             = ""
+  spec.license              = "MIT"
+  spec.post_install_message = %Q{
+    Thanks for installing the Pre-Git whatever hooker!
 
-  spec.files         = `git ls-files -z`.split("\x0")
-  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
-  spec.require_paths = ["lib"]
+    If you don't have already, please install the hook:
+
+    githoog install --type <GIT_HOOK_TYPE> --plugins_dir <PATH_TO_PLUGINS> \
+      --project_dir <PATH_TO_PROJECT>
+  }
+
+
+  spec.files                = `git ls-files -z`.split("\x0")
+  spec.executables          = spec.files.grep(%r{^bin/}) { |f| File.basename(f)}
+  spec.test_files           = spec.files.grep(%r{^(test|spec|features)/})
+  spec.require_paths        = ["lib"]
 
   spec.add_runtime_dependency "colorize", "~> 0.7.3"
   spec.add_runtime_dependency "thor", "~> 0.19.1"
