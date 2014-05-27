@@ -26,6 +26,10 @@ describe CaptainHoog::Plugin do
     expect(plugin).to respond_to(:git)
   end
 
+  it "provides access to the env" do
+    expect(plugin).to respond_to(:env)
+  end
+
   describe "#initialize" do
 
     it "prepares git" do

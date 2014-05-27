@@ -2,6 +2,8 @@ module CaptainHoog
   # Public: Class that evaluates a plugin from a given bunch of DSL code.
   class Plugin
 
+    attr_accessor :env
+
     # Public: Initializes the Plugin evaluator.
     #
     # code - the plugin code as String
