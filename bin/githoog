@@ -61,6 +61,7 @@ class GitHookInstall < Thor
   def install_hook(config)
     opts = config[:context]
     template("install.erb",File.join(hooks_dir, config[:as]), opts)
+    FileUtils.chmod(0755,File.join(hooks_dir, config[:as]))
   end
 
   def remove_hook(config)
