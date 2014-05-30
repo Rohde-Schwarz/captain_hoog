@@ -30,6 +30,10 @@ describe CaptainHoog::Git do
       expect(subject).to respond_to(:render_table)
     end
 
+    it "has #run method" do
+      expect(subject).to respond_to(:run)
+    end
+
     describe "#test" do
 
       context "returning a non boolean value" do
@@ -148,6 +152,25 @@ describe CaptainHoog::Git do
 
     end
 
+    describe "#run" do
+
+      it "sets @test_result to true" do
+        subject.run do
+          "hello"
+        end
+        expect(subject.instance_variable_get(:@test_result)).to be true
+      end
+
+      it "evaluates the given block" do
+        subject.run do
+          subject.helper :foo_run do
+            12
+          end
+        end
+        expect(subject).to respond_to(:foo_run)
+      end
+
+    end
   end
 
 end

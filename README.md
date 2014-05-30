@@ -61,7 +61,7 @@ githoog remove --type <GIT_HOOK_TYPE>
 
 command.
 
-where ```<GIT_HOOK_TYPE>``` is ```pre-commit``` by default. 
+where ```<GIT_HOOK_TYPE>``` is ```pre-commit``` by default.
 
 ### Writing plugins
 
@@ -70,6 +70,7 @@ A CaptainHoog plugin is written with a very simple DSL that used with the follow
 * ```test```
 * ```message```
 * ```helper```
+* ```run```
 
 Within ```test``` any stuff is done that either forces the commit to exit or
 to pass. Whatever you want to do like syntax checking, code style checking -
@@ -111,6 +112,20 @@ git do |pre|
    %q{ You have some logger outputs in your code! }
   end
 end
+```
+
+If you don't want to test anything before commiting or pushing thus just running
+a command or something similiar, use the ```run``` method.
+
+```
+git do |pre|
+
+  pre.run do
+    system "git show --name-only HEAD"
+  end
+
+end
+
 ```
 
 ## Last stuff

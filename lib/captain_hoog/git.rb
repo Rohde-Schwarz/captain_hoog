@@ -25,6 +25,11 @@ module CaptainHoog
       self.class.send(:define_method, name, &block)
     end
 
+    def run
+      @test_result = true
+      yield if block_given?
+    end
+
     # Public: Renders a table.
     #
     # rows - An Array of row contents
