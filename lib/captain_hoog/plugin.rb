@@ -31,5 +31,13 @@ module CaptainHoog
       }
     end
 
+    def method_missing(method_name, *args, &block)
+      if @git.respond_to?(method_name)
+        @git.send(method_name, *args, &block)
+      else
+        super
+      end
+    end
+
   end
 end

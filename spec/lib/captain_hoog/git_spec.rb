@@ -118,6 +118,30 @@ describe CaptainHoog::Git do
 
       end
 
+      describe "integrated in a plugin" do
+
+        let(:code) do
+          path =File.join(File.dirname(__FILE__),
+                          "..",
+                          "..",
+                          "fixtures",
+                          "code",
+                          "helper.rb")
+          File.read(path)
+        end
+
+        it "provides access directly to the helper" do
+          plugin = CaptainHoog::Plugin.new(code, "")
+
+          expect do
+            plugin.eval_plugin
+          end.to_not raise_error
+
+          expect(plugin.eval_plugin[:message]).to eq "It's 12."
+        end
+
+      end
+
     end
 
   end
