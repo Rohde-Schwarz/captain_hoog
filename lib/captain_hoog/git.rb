@@ -25,5 +25,16 @@ module CaptainHoog
       self.class.send(:define_method, name, &block)
     end
 
+    # Public: Renders a table.
+    #
+    # rows - An Array of row contents
+    # headings - An Array of headlines
+    #
+    # Returns the table as String.
+    def render_table(rows, headings = [])
+      table = ::Terminal::Table.new(:headings => headings, :rows => rows)
+
+      table.to_s
+    end
   end
 end

@@ -26,6 +26,10 @@ describe CaptainHoog::Git do
       expect(subject).to respond_to(:helper)
     end
 
+    it "has #render_table method" do
+      expect(subject).to respond_to(:render_table)
+    end
+
     describe "#test" do
 
       context "returning a non boolean value" do
