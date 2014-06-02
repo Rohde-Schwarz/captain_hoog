@@ -36,6 +36,7 @@ describe CaptainHoog::PreGit do
                   "..",
                   "..",
                   "fixtures",
+                  "plugins",
                   "test_plugins")
       end
 

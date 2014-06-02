@@ -24,7 +24,7 @@ class GitHookInstall < Thor
     check_if_option_present("plugins_dir")
     install_hook({ as: options[:type],
                    context: {
-                     plugins_dir: options[:plugins_dir],
+                     plugins_dir: "#{options[:plugins_dir]}/#{options[:type]}",
                      project_dir: options[:project_dir]
                    }
                 })

@@ -49,6 +49,18 @@ to your needs. You can omit this.
 
 is required and should point to the directory you store the CaptainHoog plugins.
 
+_A note about plugin directories:_ The CaptainHoog will expect the following directory structure:
+
+```
+--<PATH_TO_PLUGIN>
+ |-- pre-commit
+ |-- pre-push
+ |-- ..
+ |-- shared
+```
+
+If you need plugins that should be run by any hook, place them into the ```shared``` directory. 
+
 These options are adjustable anytime you want in ```.git/hooks/<YOUR_HOOK_FILE>```.
 
 ### Removing the hook

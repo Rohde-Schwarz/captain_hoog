@@ -32,10 +32,10 @@ module CaptainHoog
       env = prepare_env
       @plugins = []
       if self.class.plugins_dir
-        Dir["#{self.class.plugins_dir}/**/**.rb"].each do |plugin|
-          code = File.read(plugin)
-          @plugins << Plugin.new(code,env)
-        end
+        read_plugins_from_dir(self.class.plugins_dir,env)
+      end
+      if shared_plugins_dir_present?
+        read_plugins_from_dir(shared_plugins_dir, env)
       end
     end
 
@@ -94,6 +94,21 @@ module CaptainHoog
         success: "All tests passed. No reason to prevent the commit.",
         failure: "Commit failed. See errors below."
       }
+    end
+
+    def shared_plugins_dir_present?
+      File.exists?(shared_plugins_dir)
+    end
+
+    def shared_plugins_dir
+      File.join(self.class.plugins_dir, "..", "shared")
+    end
+
+    def read_plugins_from_dir(dir, env)
+      Dir["#{dir}/**/**.rb"].each do |plugin|
+        code = File.read(plugin)
+        @plugins << Plugin.new(code,env)
+      end
     end
 
   end
