@@ -19,6 +19,11 @@ And then execute:
 Or install it yourself as:
 
     $ gem install captain_hoog
+    
+If the gem cannot be found in any of the sources, 
+consider adding our geminabox server to your gem sources by running
+
+    $ gem sources --add http://geminabox.lan.adytonsystems.com
 
 ## Usage
 
