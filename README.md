@@ -33,6 +33,8 @@ consider adding our geminabox server to your gem sources by running
 githoog install --type <GIT_HOOK_TYPE> --plugins_dir <PATH_TO_PLUGINS> --project_dir <PATH_TO_PROJECT>
 ```
 
+**Please note:**  ```<PATH_TO_PLUGINS>``` and ```<PATH_TO_PROJECT>``` must be given as absolute paths.
+
 ```GIT_HOOK_TYPE``` may be something like this
 
 * pre-commit (default)
