@@ -34,6 +34,7 @@ githoog install --type <GIT_HOOK_TYPE> --plugins_dir <PATH_TO_PLUGINS> --project
 ```
 
 **Please note:**  ```<PATH_TO_PLUGINS>``` and ```<PATH_TO_PROJECT>``` must be given as absolute paths.
+Also make sure to run this from your git repository's root folder.
 
 ```GIT_HOOK_TYPE``` may be something like this
 
@@ -65,6 +66,10 @@ _A note about plugin directories:_ The CaptainHoog will expect the following dir
  |-- ..
  |-- shared
 ```
+
+If you are a web-developer at gateprotect you can use the already existing and prefilled
+plugin-directory located at <web-repository>/pre_git_plugins and use this as your plugins_dir.
+The project_dir should then point to webgui2 since this is where rspec should be called from.
 
 If you need plugins that should be run by any hook, place them into the ```shared``` directory. 
 
