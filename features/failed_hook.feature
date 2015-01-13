@@ -8,7 +8,7 @@ Feature: Having a hook plugin that fails
     Then it should fail with:
       """
       Commit failed. See errors below.
-      
-      The test failed. Prevent you from doing anything.
+
+      The test failed in with_git. Prevent you from doing anything.
       """
     And the exit status should be 1

@@ -6,6 +6,10 @@ describe CaptainHoog::Plugin do
     <<-CODE
 
     git do |pre|
+      pre.helper :test_helper do
+        env.variable
+      end
+
       pre.test do
         false
       end
@@ -18,8 +22,14 @@ describe CaptainHoog::Plugin do
     CODE
   end
 
+  let(:env) do
+    env = CaptainHoog::Env.new
+    env[:variable] = 12
+    env
+  end
+
   let(:plugin) do
-    CaptainHoog::Plugin.new(code, CaptainHoog::Env.new)
+    CaptainHoog::Plugin.new(code, env)
   end
 
   it "provides access to the DSL" do

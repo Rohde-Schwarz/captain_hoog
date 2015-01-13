@@ -3,6 +3,10 @@ module CaptainHoog
 
     attr_accessor :env
 
+    def initialize
+      @helper_table = HelperTable.new
+    end
+
     def test
       if block_given?
         @test_result = yield
@@ -22,7 +26,10 @@ module CaptainHoog
     end
 
     def helper(name,&block)
-      self.class.send(:define_method, name, &block)
+      return if @helper_table.helper_defined?(name)
+      helper_proc = {}
+      helper_proc[name] = block
+      @helper_table.set(helper_proc)
     end
 
     def run
@@ -37,9 +44,20 @@ module CaptainHoog
     #
     # Returns the table as String.
     def render_table(rows, headings = [])
-      table = ::Terminal::Table.new(:headings => headings, :rows => rows)
+      table = ::Terminal::Table.new(headings: headings, rows: rows)
 
       table.to_s
+    end
+
+    def method_missing(meth_name, *args, &block)
+      super unless @helper_table.helper_defined?(meth_name)
+      helper = @helper_table[meth_name]
+      fail ArgumentError unless helper[meth_name].arity == args.size
+      helper[meth_name].call(*args)
+    end
+
+    def respond_to_missing?(meth_name, include_private = false)
+      @helper_table.helper_defined?(meth_name) || super
     end
   end
 end

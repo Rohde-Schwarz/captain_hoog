@@ -94,12 +94,16 @@ describe CaptainHoog::Git do
 
       before do
         git.helper :my_helper do
-
+          "foo"
         end
       end
 
       it "defines a helper method with a given name" do
         expect(git).to respond_to(:my_helper)
+      end
+
+      it "evaluates the helper" do
+        expect(git.my_helper).to eq 'foo'
       end
 
       context "passing variables to the helper" do

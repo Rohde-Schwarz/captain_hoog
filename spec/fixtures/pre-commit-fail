@@ -7,4 +7,5 @@ plugins_path = File.expand_path(File.join(File.dirname(__FILE__),
                                           "failing"))
 
 CaptainHoog::PreGit.plugins_dir = plugins_path
+CaptainHoog::PreGit.project_dir = 'with_git'
 CaptainHoog::PreGit.run
