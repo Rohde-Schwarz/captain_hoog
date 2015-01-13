@@ -32,7 +32,7 @@ module CaptainHoog
       env = prepare_env
       @plugins = []
       if self.class.plugins_dir
-        read_plugins_from_dir(self.class.plugins_dir,env)
+        read_plugins_from_dir(self.class.plugins_dir, env)
       end
       if shared_plugins_dir_present?
         read_plugins_from_dir(shared_plugins_dir, env)
@@ -45,11 +45,12 @@ module CaptainHoog
     # it displays the plugins failure messages and exits with code 1
     #
     def plugins_eval
-      @results = @plugins.inject([]) do |result, item|
+      raw_results = @plugins.inject([]) do |result, item|
         result << item.eval_plugin
         result
       end
-      tests = @results.map{|result| result[:result]}
+      @results = raw_results.select{ |result| result.is_a?(Hash) }
+      tests    = @results.map{ |result| result[:result] }
       if tests.any?{ |test| not test }
         message_on_failure
         exit 1 unless ENV["PREGIT_ENV"] == "test"
