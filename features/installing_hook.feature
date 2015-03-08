@@ -11,15 +11,6 @@ Feature: Installing a Git hook with the gem
       I can't detect a Git repository
       """
 
-  Scenario:Having a Git repository, installing hook and ommit required options
-    Given I am in a directory that is a Git repository
-    When I run the install script without "plugins_dir" flag
-    Then it should fail with:
-      """
-      No value provided for required options '--plugins_dir'
-      """
-
-
   Scenario Outline: Having a Git repository and installing hook
     Given I am in a directory that is a Git repository
     When I run the install script with "<Hook>" type flag
@@ -28,6 +19,9 @@ Feature: Installing a Git hook with the gem
       Installed hook as <Hook> hook
       """
     And a "<Hook>" hook file exists
+    And a hook config file exists
+    And the config file includes the "plugins" directory
+    And the config file includes the "project" directory
 
     Examples:
       | Hook |

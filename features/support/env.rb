@@ -25,6 +25,7 @@ end
 
 
 After do
+  FileUtils.rm_rf(File.join(FIXTURES_PATH, 'with_git', 'hoogfile.yml'))
   %w{ pre-commit
       pre-push
       pre-rebase

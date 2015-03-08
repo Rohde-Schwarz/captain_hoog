@@ -16,15 +16,18 @@ class GitHookInstall < Thor
 
   class_option :type, type: :string, default: 'pre-commit'
   class_option :project_dir, type: :string, default: Dir.getwd
-  class_option :plugins_dir, type: :string
+  class_option :plugins_dir, type: :string, default: Dir.getwd
 
   desc "install","Installs the hook into your Git repository"
   def install(*args)
     check_if_git_present
     check_if_option_present("plugins_dir")
+    # deprecated:
+    # "#{options[:plugins_dir]}/#{options[:type]}"
     install_hook({ as: options[:type],
                    context: {
-                     plugins_dir: "#{options[:plugins_dir]}/#{options[:type]}",
+                     root_dir: Dir.getwd,
+                     plugins_dir: options[:plugins_dir],
                      project_dir: options[:project_dir]
                    }
                 })
@@ -59,7 +62,9 @@ class GitHookInstall < Thor
  end
 
   def install_hook(config)
-    opts = config[:context]
+    opts        = config[:context]
+    opts[:type] = config[:as]
+    copy_config_file(opts)
     template("install.erb",File.join(hooks_dir, config[:as]), opts)
     FileUtils.chmod(0755,File.join(hooks_dir, config[:as]))
   end
@@ -75,7 +80,11 @@ class GitHookInstall < Thor
   end
 
   def hooks_dir
-    File.join(Dir.getwd, ".git", "hooks")
+    git_dir.join(".git", "hooks")
+  end
+
+  def git_dir
+    Pathname.new(Dir.getwd)
   end
 
   def check_if_git_present
@@ -90,6 +99,10 @@ class GitHookInstall < Thor
       puts "No value provided for required options '--#{type}'".red
       raise Thor::Error
     end
+  end
+
+  def copy_config_file(opts={})
+    template('hoogfile.erb', git_dir.join('hoogfile.yml'), opts)
   end
 
 end
