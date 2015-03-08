@@ -1,8 +1,11 @@
 module CaptainHoog
   # Public: Class that evaluates a plugin from a given bunch of DSL code.
   class Plugin
+    include Delegatable
 
     attr_accessor :env
+
+    delegate_to :eigenplugin
 
     # Public: Initializes the Plugin evaluator.
     #
@@ -35,23 +38,14 @@ module CaptainHoog
       }
     end
 
-    def method_missing(method_name, *args, &block)
-      if eigenplugin.respond_to?(method_name)
-        eigenplugin.send(method_name)
-      else
-        super
-      end
-    end
-
-    def respond_to_missing?(method_name, include_private=false)
-      eigenplugin.respond_to?(method_name) || super
-    end
-
     private
 
     def eigenplugin
       @eigenplugin ||= Class.new do
+        include Delegatable
         attr_reader :plugin_name
+
+        delegate_to :git
 
         def initialize(git)
           @git = git
@@ -62,17 +56,6 @@ module CaptainHoog
           yield(@git) if block_given?
         end
 
-        def method_missing(method_name, *args, &block)
-          if @git.respond_to?(method_name)
-            @git.send(method_name, *args, &block)
-          else
-            super
-          end
-        end
-
-        def respond_to_missing?(method_name, include_private=false)
-          @git.respond_to?(method_name) || super
-        end
       end.new(@git)
     end
 
