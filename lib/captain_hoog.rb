@@ -6,6 +6,7 @@ require "captain_hoog/env"
 require "captain_hoog/git"
 require "captain_hoog/plugin"
 require "captain_hoog/pre_git"
+require "captain_hoog/plugin_list"
 
 module CaptainHoog
   # Your code goes here...
