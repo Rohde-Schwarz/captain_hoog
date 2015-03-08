@@ -10,9 +10,6 @@ module CaptainHoog
     def test(&test_block)
       if test_block
         @test_block = test_block
-        #unless @test_result.is_a?(FalseClass) or @test_result.is_a?(TrueClass)
-        #  raise CaptainHoog::Errors::TestResultNotValidError
-        #end
       end
     end
 
@@ -35,7 +32,6 @@ module CaptainHoog
     def run(&run_block)
       @test_result = true
       @run_block   = run_block
-      #yield if block_given?
     end
 
     # Public: Renders a table.
