@@ -1,18 +1,20 @@
 #!/usr/bin/env ruby
 require 'captain_hoog'
+require 'yaml'
 
-# Adjust the path below.
-plugins_path = File.expand_path(File.join(File.dirname(__FILE__),
-                                                   "..",
-                                                   "..",
-                                                   "plugins"))
+# read config
+hoog_config = YAML.load_file(File.join('<%= config['root_dir'] %>',
+                                       'hoogfile.yml'))
 
 # Adjust settings
 CaptainHoog::PreGit.configure do |config|
-  config.plugins_dir =  "<%= config[:plugins_dir] %>"
-  config.project_dir = "<%= config[:project_dir] %>"
+  config.plugins_dir      = hoog_config['plugins_dir']
+  config.project_dir      = hoog_config['project_dir']
   #config.headline_on_success = "All is fine."
   #config.headline_on_failure = "Oops. Something went wrong"
 end
 
-CaptainHoog::PreGit.run
+plugin_list = CaptainHoog::PluginList.new(<%=config[:type] %>,
+                                          config: hoog_config)
+
+CaptainHoog::PreGit.run(plugins_list: plugin_list)
