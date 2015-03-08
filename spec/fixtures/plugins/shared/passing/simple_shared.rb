@@ -1,4 +1,4 @@
-git do |pre|
+git.describe "shared" do |pre|
 
   pre.test do
     true

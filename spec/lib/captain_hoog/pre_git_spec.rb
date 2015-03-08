@@ -70,8 +70,26 @@ describe CaptainHoog::PreGit do
 
     describe "#run" do
 
+      let(:plugins_list) do
+        Class.new do
+          def plugins
+            %w(simple)
+          end
+
+          def has?(plugin)
+            plugins.include?(plugin.plugin_name)
+          end
+        end.new
+      end
+
       it "returns an instance of CaptainHoog::PreGit" do
-        expect(CaptainHoog::PreGit.run).to be_instance_of(CaptainHoog::PreGit)
+        expect(CaptainHoog::PreGit.run(plugins_list: plugins_list)).to \
+                                            be_instance_of(CaptainHoog::PreGit)
+      end
+
+      it 'affects only configured plugins' do
+        pre_git = CaptainHoog::PreGit.run(plugins_list:plugins_list)
+        expect(pre_git.instance_variable_get(:@results).size).to eq 1
       end
 
     end

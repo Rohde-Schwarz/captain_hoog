@@ -7,12 +7,12 @@ module CaptainHoog
       @helper_table = HelperTable.new
     end
 
-    def test
-      if block_given?
-        @test_result = yield
-        unless @test_result.is_a?(FalseClass) or @test_result.is_a?(TrueClass)
-          raise CaptainHoog::Errors::TestResultNotValidError
-        end
+    def test(&test_block)
+      if test_block
+        @test_block = test_block
+        #unless @test_result.is_a?(FalseClass) or @test_result.is_a?(TrueClass)
+        #  raise CaptainHoog::Errors::TestResultNotValidError
+        #end
       end
     end
 
@@ -32,9 +32,10 @@ module CaptainHoog
       @helper_table.set(helper_proc)
     end
 
-    def run
+    def run(&run_block)
       @test_result = true
-      yield if block_given?
+      @run_block   = run_block
+      #yield if block_given?
     end
 
     # Public: Renders a table.
@@ -58,6 +59,18 @@ module CaptainHoog
 
     def respond_to_missing?(meth_name, include_private = false)
       @helper_table.helper_defined?(meth_name) || super
+    end
+
+    def execute
+      if @test_block
+        @test_result = @test_block.call
+      else
+        # run #run
+        @run_block.call
+      end
+      unless @test_result.is_a?(FalseClass) or @test_result.is_a?(TrueClass)
+        raise CaptainHoog::Errors::TestResultNotValidError
+      end
     end
   end
 end

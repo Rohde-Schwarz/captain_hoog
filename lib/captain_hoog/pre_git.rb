@@ -15,8 +15,8 @@ module CaptainHoog
     # Inits a new instance of self and evaluates the plugins (if found some)
     #
     # Returns an instance of self (CaptainHoog::PreGit)
-    def self.run
-      pre_git = self.new
+    def self.run(plugins_list: nil)
+      pre_git = self.new(plugins_list)
       pre_git.plugins_eval
       pre_git
     end
@@ -28,9 +28,10 @@ module CaptainHoog
       yield(self) if block_given?
     end
 
-    def initialize
-      env = prepare_env
-      @plugins = []
+    def initialize(plugins_list = nil)
+      env           = prepare_env
+      @plugins      = []
+      @plugins_list = plugins_list
       if self.class.plugins_dir
         read_plugins_from_dir(self.class.plugins_dir, env)
       end
@@ -45,9 +46,8 @@ module CaptainHoog
     # it displays the plugins failure messages and exits with code 1
     #
     def plugins_eval
-      raw_results = @plugins.inject([]) do |result, item|
-        result << item.eval_plugin
-        result
+      raw_results = available_plugins.inject([]) do |result, plugin|
+        result << plugin.execute
       end
       @results = raw_results.select{ |result| result.is_a?(Hash) }
       tests    = @results.map{ |result| result[:result] }
@@ -61,6 +61,14 @@ module CaptainHoog
     end
 
     private
+
+    def available_plugins
+      @plugins.inject([]) do |result, item|
+        item.eval_plugin
+        result << item if @plugins_list.has?(item)
+        result
+      end
+    end
 
     def prepare_env
       env = Env.new

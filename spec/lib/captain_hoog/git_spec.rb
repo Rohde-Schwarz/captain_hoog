@@ -37,12 +37,14 @@ describe CaptainHoog::Git do
     describe "#test" do
 
       context "returning a non boolean value" do
-
+        before do
+          subject.test do
+            "Hello"
+          end
+        end
         it "raises error" do
           expect do
-            subject.test do
-              "Hello"
-            end
+            subject.execute
           end.to raise_error(CaptainHoog::Errors::TestResultNotValidError)
         end
 
@@ -147,9 +149,11 @@ describe CaptainHoog::Git do
 
           expect do
             plugin.eval_plugin
+            plugin.execute
           end.to_not raise_error
 
-          expect(plugin.eval_plugin[:message]).to eq "It's 12."
+          plugin.eval_plugin
+          expect(plugin.execute[:message]).to eq "It's 12."
         end
 
       end
@@ -171,6 +175,7 @@ describe CaptainHoog::Git do
             12
           end
         end
+        subject.execute
         expect(subject).to respond_to(:foo_run)
       end
 

@@ -6,6 +6,20 @@ plugins_path = File.expand_path(File.join(File.dirname(__FILE__),
                                           "test_plugins",
                                           "failing"))
 
-CaptainHoog::PreGit.plugins_dir = plugins_path
-CaptainHoog::PreGit.project_dir = 'with_git'
-CaptainHoog::PreGit.run
+hoog_config = {
+  'exclude' => [],
+  'plugins_dir' => plugins_path,
+  'project_dir' => 'with_git',
+  'pre-commit' => ['foo']
+}
+
+plugin_list = CaptainHoog::PluginList.new('pre-commit',
+                                          config: hoog_config)
+
+# Adjust settings
+CaptainHoog::PreGit.configure do |config|
+  config.plugins_dir      = hoog_config['plugins_dir']
+  config.project_dir      = hoog_config['project_dir']
+end
+
+CaptainHoog::PreGit.run(plugins_list: plugin_list)

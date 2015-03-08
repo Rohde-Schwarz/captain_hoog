@@ -1,4 +1,4 @@
-git do |pre|
+git.describe "helper" do |pre|
   pre.helper :my_helper do
     12
   end

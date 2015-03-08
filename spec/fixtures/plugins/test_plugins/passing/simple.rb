@@ -1,4 +1,4 @@
-git do |pre|
+git.describe "simple" do |pre|
 
   pre.test do
     true

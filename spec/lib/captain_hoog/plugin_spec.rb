@@ -5,7 +5,7 @@ describe CaptainHoog::Plugin do
   let(:code) do
     <<-CODE
 
-    git do |pre|
+    git.describe "rspec" do |pre|
       pre.helper :test_helper do
         env.variable
       end
@@ -63,25 +63,37 @@ describe CaptainHoog::Plugin do
     end
 
     describe "#eval_plugin" do
+      before do
+        plugin.eval_plugin
+      end
 
-      it "returns a Hash" do
-        expect(plugin.eval_plugin).to be_instance_of(Hash)
+      it "evaluates the code abd provides #test_helper" do
+        expect(plugin).to respond_to(:test_helper) #be_instance_of(Hash)
+      end
+
+    end
+
+    describe '#execute' do
+
+      before do
+        plugin.eval_plugin
       end
 
       describe "the returning hash" do
 
+        subject { plugin.execute }
+
         it "includes the test result at the :result key" do
-          expect(plugin.eval_plugin).to have_key(:result)
-          expect(plugin.eval_plugin[:result]).to be false
+          expect(subject).to have_key(:result)
+          expect(subject[:result]).to be false
         end
 
         it "includes the test failure message at the :message key" do
-          expect(plugin.eval_plugin).to have_key(:message)
-          expect(plugin.eval_plugin[:message]).to eq "Test failed."
+          expect(subject).to have_key(:message)
+          expect(subject[:message]).to eq "Test failed."
         end
 
       end
-
     end
 
   end

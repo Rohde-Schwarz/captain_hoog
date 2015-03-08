@@ -17,7 +17,7 @@ module CaptainHoog
 
     # Public: Yields the code given in @code.
     def git
-      yield(@git) if block_given?
+      eigenplugin
     end
 
     # Public: Evaluates a plugin and stores the results in a Hash.
@@ -25,6 +25,10 @@ module CaptainHoog
     # Returns a Hash containing the test result and the failure message.
     def eval_plugin
       instance_eval(@code)
+    end
+
+    def execute
+      eigenplugin.execute
       {
         :result  => @git.instance_variable_get(:@test_result),
         :message => @git.instance_variable_get(:@message)
@@ -32,11 +36,44 @@ module CaptainHoog
     end
 
     def method_missing(method_name, *args, &block)
-      if @git.respond_to?(method_name)
-        @git.send(method_name, *args, &block)
+      if eigenplugin.respond_to?(method_name)
+        eigenplugin.send(method_name)
       else
         super
       end
+    end
+
+    def respond_to_missing?(method_name, include_private=false)
+      eigenplugin.respond_to?(method_name) || super
+    end
+
+    private
+
+    def eigenplugin
+      @eigenplugin ||= Class.new do
+        attr_reader :plugin_name
+
+        def initialize(git)
+          @git = git
+        end
+
+        def describe(name)
+          @plugin_name = name
+          yield(@git) if block_given?
+        end
+
+        def method_missing(method_name, *args, &block)
+          if @git.respond_to?(method_name)
+            @git.send(method_name, *args, &block)
+          else
+            super
+          end
+        end
+
+        def respond_to_missing?(method_name, include_private=false)
+          @git.respond_to?(method_name) || super
+        end
+      end.new(@git)
     end
 
   end

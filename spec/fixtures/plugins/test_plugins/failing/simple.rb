@@ -1,4 +1,5 @@
-git do |pre|
+git.describe "foo" do |pre|
+
   pre.helper :test_helper do
     env.project_dir
   end
