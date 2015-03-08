@@ -1,23 +1,3 @@
-def bin_path
-  File.expand_path(File.join(File.dirname(__FILE__),
-                             "..",
-                             "..",
-                             ".."))
-end
-
-def hooks_path(type)
-  path = File.expand_path(File.join(File.dirname(__FILE__),
-                               "..",
-                               "..",
-                               "..",
-                               "spec",
-                               "fixtures",
-                               "with_git",
-                               ".git",
-                               "hooks",
-                               type))
-end
-
 When(/^I run a commit hook that might succeeds$/) do
   hook_path = File.expand_path(File.join(File.dirname(__FILE__),
                                "..",
@@ -30,7 +10,8 @@ When(/^I run a commit hook that might succeeds$/) do
 end
 
 When(/^I run the install script with "(.*?)" type flag$/) do |commit_type|
-  run_simple(unescape("ruby #{bin_path}/bin/githoog install --type #{commit_type} --plugins_dir /home"),
+  @dir = git_project_path.to_s
+  run_simple(unescape("ruby #{bin_path}/bin/githoog install --type #{commit_type} --plugins_dir #{@dir}"),
             false)
 end
 
@@ -69,4 +50,14 @@ end
 When(/^I run the install script without "(.*?)" flag$/) do |type_flag|
   cmd = "ruby #{bin_path}/bin/githoog install"
   run_simple(unescape(cmd),false)
+end
+
+Then(/^a hook config file exists$/) do
+  expect(File.exists?(hook_config_file_path)).to be true
+end
+
+Then(/^the config file includes the "(.*?)" directory$/) do |config_path|
+  config = YAML.load_file(hook_config_file_path)
+  expect(config).to have_key("#{config_path}_dir")
+  expect(config["#{config_path}_dir"]).to include @dir
 end
