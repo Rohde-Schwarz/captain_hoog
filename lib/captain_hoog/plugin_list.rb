@@ -19,6 +19,9 @@ module CaptainHoog
       plugins_for_type = @config.fetch(@type, [])
       excluded_plugins = @config.fetch('exclude', [])
 
+      plugins_for_type = [] if plugins_for_type.nil?
+      excluded_plugins = [] if excluded_plugins.nil?
+
       @plugins = plugins_for_type - excluded_plugins
     end
 
