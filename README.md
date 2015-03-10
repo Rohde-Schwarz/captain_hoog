@@ -1,4 +1,4 @@
-# CaptainHoog
+	# CaptainHoog
 
 Okay. That's not such a funny gem name. But it's a reference to Git and the subject
 of the gem: the Git Hooks.
@@ -55,25 +55,9 @@ to your needs. You can omit this.
 --plugins_dir
 ```
 
-is required and should point to the directory you store the CaptainHoog plugins.
+is not required anymore. If it's omited it will point to the actual directory you run the install script from. It should point to the directory you store the CaptainHoog plugins.
 
-_A note about plugin directories:_ The CaptainHoog will expect the following directory structure:
-
-```
---<PATH_TO_PLUGIN>
- |-- pre-commit
- |-- pre-push
- |-- ..
- |-- shared
-```
-
-If you are a web-developer at gateprotect you can use the already existing and prefilled
-plugin-directory located at <web-repository>/pre_git_plugins and use this as your plugins_dir.
-The project_dir should then point to webgui2 since this is where rspec should be called from.
-
-If you need plugins that should be run by any hook, place them into the ```shared``` directory. 
-
-These options are adjustable anytime you want in ```.git/hooks/<YOUR_HOOK_FILE>```.
+_A note about plugin directories:_ All plugins must be placed in one directory. You can select which plugin is called from which Git hook later by defining it in the Hoogfile.
 
 ### Removing the hook
 
@@ -87,6 +71,39 @@ command.
 
 where ```<GIT_HOOK_TYPE>``` is ```pre-commit``` by default.
 
+### The Hoogfile
+
+All plugin executable and ignoring power is configurable in the Hoogfile. The Hoogfile's name is ```hoogfile.yml``` and it will be installed in your Git root directory. If you install several hooks, the installer will ask you if you want to override the config file. 
+
+The Hoogfile has several sections:
+
+* hook plugins per type 
+* project dir
+* plugins dir
+
+Some options are predefined from your information you provided during installation:
+
+* project dir
+* plugins dir
+
+If this did not matches your need anymore, just pass the new paths in there. 
+
+Captain Hoog is doing nothing by default. You have explicitly define which plugins it should run or which not. You do this per hook type. E.g. for ```pre-commit```:
+
+```
+pre-commit:
+  - cucumber
+  - rspec 
+```
+
+So the plugins named **cucumber** and **rspec** are running before your commit applies to the index.
+
+
+
+### Migrating from pre 1.0 versions
+
+There is no migration path from previous versions. Just re-install and adjust the Hoogfile to your previous configuration.  
+
 ### Writing plugins
 
 A CaptainHoog plugin is written with a very simple DSL that used with the following expressions:
@@ -98,13 +115,15 @@ A CaptainHoog plugin is written with a very simple DSL that used with the follow
 
 Within ```test``` any stuff is done that either forces the commit to exit or
 to pass. Whatever you want to do like syntax checking, code style checking -
-implement it there and make sure you return a boolean value.
+implement it and make sure you return a boolean value.
 
 ```message``` is used to define a notifiaction that is shown to the user if
 the test **fails**. This obviously must return a String.  
 
+You have to add a description (or name) to your plugin, this description (or name) will be used to check if the plugin should be executed or not by adding the plugins name to the section <hook plugins per type> of your Hoogfile. 
+
 ```
-git do |pre|
+git.describe 'sample' do |pre|
 
   pre.test do
     # do any test like code style guide, syntax checking...
@@ -122,7 +141,7 @@ With ```helper``` you can extract some logic into a helper method that is useabl
 in the plugin.
 
 ```
-git do |pre|
+git.describe 'logger' do |pre|
 
   pre.helper :collect_logger_outputs do
     # do something
@@ -142,7 +161,7 @@ If you don't want to test anything before commiting or pushing thus just running
 a command or something similiar, use the ```run``` method.
 
 ```
-git do |pre|
+git.describe 'name of Git head' do |pre|
 
   pre.run do
     system "git show --name-only HEAD"

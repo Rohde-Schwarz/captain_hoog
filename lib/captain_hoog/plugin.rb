@@ -23,13 +23,17 @@ module CaptainHoog
       eigenplugin
     end
 
-    # Public: Evaluates a plugin and stores the results in a Hash.
+    # Public: Evaluates the plugin by 'reading' the dsl. Did not execute
+    # anything.
     #
-    # Returns a Hash containing the test result and the failure message.
+    # Returns nothing
     def eval_plugin
       instance_eval(@code)
     end
 
+    # Public: Executes a plugin and stores the results in a Hash.
+    #
+    # Returns a Hash containing the test result and the failure message.
     def execute
       eigenplugin.execute
       {
