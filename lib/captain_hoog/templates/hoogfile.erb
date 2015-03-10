@@ -7,29 +7,29 @@
 # at the beginning (if they're provided during installation).
 
 # Exclude plugins you don't want to be executed within every
-# hook type.
+# hook type. This has no effect in v1.x
 #
 # The name is taken from the plugin's name identifier.
-exclude:
- - cucumber
- - log
+# exclude:
+# - cucumber
+# - log
 
 # Specify plugins you want to have executed within a pre-commit hook.
 # If no list is specfied, all plugins are executed (if the pre-commit
 # hook is installed).
 #
 # The name is taken from the plugin's name identifier.
-pre-commit:
- - pry
- - rspec
+# pre-commit:
+#  - pry
+#  - rspec
 
 # Specify plugins you want to have executed within a pre-push hook.
 # If no list is specfied, all plugins are executed (if the pre-push
 # hook is installed).
 #
 # The name is taken from the plugin's name identifier.
-pre-push:
- - mat
+# pre-push:
+#  - mat
 
 # path in which the hooks should be executed. It's Git root by default.
 # This is going into env.
