@@ -1,10 +1,9 @@
-	# CaptainHoog
+# CaptainHoog
 
 Okay. That's not such a funny gem name. But it's a reference to Git and the subject
 of the gem: the Git Hooks.
 
-![Alt text](http://dyxygd30hex7h.cloudfront.net/sites/www.prismaticart.com/files/PRISMATIC_ADAM.jpg)
-
+<img src="http://dyxygd30hex7h.cloudfront.net/sites/www.prismaticart.com/files/PRISMATIC_ADAM.jpg" height="450">
 
 ## Installation
 
@@ -19,11 +18,6 @@ And then execute:
 Or install it yourself as:
 
     $ gem install captain_hoog
-    
-If the gem cannot be found in any of the sources, 
-consider adding our geminabox server to your gem sources by running
-
-    $ gem sources --add http://geminabox.lan.adytonsystems.com
 
 ## Usage
 
@@ -73,11 +67,11 @@ where ```<GIT_HOOK_TYPE>``` is ```pre-commit``` by default.
 
 ### The Hoogfile
 
-All plugin executable and ignoring power is configurable in the Hoogfile. The Hoogfile's name is ```hoogfile.yml``` and it will be installed in your Git root directory. If you install several hooks, the installer will ask you if you want to override the config file. 
+All plugin executable and ignoring power is configurable in the Hoogfile. The Hoogfile's name is ```hoogfile.yml``` and it will be installed in your Git root directory. If you install several hooks, the installer will ask you if you want to override the config file.
 
 The Hoogfile has several sections:
 
-* hook plugins per type 
+* hook plugins per type
 * project dir
 * plugins dir
 
@@ -86,14 +80,14 @@ Some options are predefined from your information you provided during installati
 * project dir
 * plugins dir
 
-If this did not matches your need anymore, just pass the new paths in there. 
+If this did not matches your need anymore, just pass the new paths in there.
 
 Captain Hoog is doing nothing by default. You have explicitly define which plugins it should run or which not. You do this per hook type. E.g. for ```pre-commit```:
 
 ```
 pre-commit:
   - cucumber
-  - rspec 
+  - rspec
 ```
 
 So the plugins named **cucumber** and **rspec** are running before your commit applies to the index.
@@ -120,9 +114,9 @@ implement it and make sure you return a boolean value.
 ```message``` is used to define a notifiaction that is shown to the user if
 the test **fails**. This obviously must return a String.  
 
-You have to add a description (or name) to your plugin, this description (or name) will be used to check if the plugin should be executed or not by adding the plugins name to the section <hook plugins per type> of your Hoogfile. 
+You have to add a description (or name) to your plugin, this description (or name) will be used to check if the plugin should be executed or not by adding the plugins name to the section <hook plugins per type> of your Hoogfile.
 
-```
+```rb
 git.describe 'sample' do |pre|
 
   pre.test do
@@ -140,7 +134,7 @@ end
 With ```helper``` you can extract some logic into a helper method that is useable anywhere
 in the plugin.
 
-```
+```rb
 git.describe 'logger' do |pre|
 
   pre.helper :collect_logger_outputs do
@@ -160,7 +154,7 @@ end
 If you don't want to test anything before commiting or pushing thus just running
 a command or something similiar, use the ```run``` method.
 
-```
+```rb
 git.describe 'name of Git head' do |pre|
 
   pre.run do
@@ -173,4 +167,6 @@ end
 
 ## Last stuff
 
-Init and written by Daniel Schmidt (daniel.schmidt@adytonsystems.com)
+Init and written by Daniel Schmidt (daniel.schmidt@gateprotect.com)
+
+Image "Captain Hook" © 2012 Brian Patterson
