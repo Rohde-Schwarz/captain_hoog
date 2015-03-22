@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
     githoog install --type <GIT_HOOK_TYPE> --plugins_dir <PATH_TO_PLUGINS> \
       --project_dir <PATH_TO_PROJECT>
   }
+  spec.required_ruby_version = '>= 2.0'
 
 
   spec.files                = `git ls-files -z`.split("\x0")
