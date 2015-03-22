@@ -51,7 +51,7 @@ to your needs. You can omit this.
 
 is not required anymore. If it's omited it will point to the actual directory you run the install script from. It should point to the directory you store the CaptainHoog plugins.
 
-_A note about plugin directories:_ All plugins must be placed in one directory. You can select which plugin is called from which Git hook later by defining it in the Hoogfile.
+_A note about plugin directories:_ To have more than one plugin directory used, just add as many plugin directories as you want do the ```plugins_dir``` section in the Hoogfile. You can select which plugin is called from which Git hook later by defining it in the Hoogfile.
 
 ### Removing the hook
 
@@ -81,8 +81,6 @@ Some options are predefined from your information you provided during installati
 * plugins dir
 
 If this did not matches your need anymore, just pass the new paths in there.
-
-**Note:** To have more than one plugin directory used, just add as many plugin directories as you want do the ```plugins_dir``` section in the Hoogfile. 
 
 Captain Hoog is doing nothing by default. You have explicitly define which plugins it should run or which not. You do this per hook type. E.g. for ```pre-commit```:
 
