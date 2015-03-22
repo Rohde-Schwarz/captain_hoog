@@ -29,15 +29,9 @@ module CaptainHoog
     end
 
     def initialize(plugins_list = nil)
-      env           = prepare_env
       @plugins      = []
       @plugins_list = plugins_list
-      if self.class.plugins_dir
-        read_plugins_from_dir(self.class.plugins_dir, env)
-      end
-      if shared_plugins_dir_present?
-        read_plugins_from_dir(shared_plugins_dir, env)
-      end
+      prepare_plugins
     end
 
     # Public: Evaluates all plugins that are found in plugins_dir.
@@ -116,7 +110,15 @@ module CaptainHoog
     def read_plugins_from_dir(dir, env)
       Dir["#{dir}/**/**.rb"].each do |plugin|
         code = File.read(plugin)
-        @plugins << Plugin.new(code,env)
+        @plugins << Plugin.new(code, env)
+      end
+    end
+
+    def prepare_plugins
+      env         = prepare_env
+      plugins_dir = self.class.plugins_dir
+      (plugins_dir.is_a?(Array) ? plugins_dir : Array(plugins_dir)).each do |dir|
+        read_plugins_from_dir(dir, env)
       end
     end
 

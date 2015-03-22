@@ -82,6 +82,8 @@ Some options are predefined from your information you provided during installati
 
 If this did not matches your need anymore, just pass the new paths in there.
 
+**Note:** To have more than one plugin directory used, just add as many plugin directories as you want do the ```plugins_dir``` section in the Hoogfile. 
+
 Captain Hoog is doing nothing by default. You have explicitly define which plugins it should run or which not. You do this per hook type. E.g. for ```pre-commit```:
 
 ```

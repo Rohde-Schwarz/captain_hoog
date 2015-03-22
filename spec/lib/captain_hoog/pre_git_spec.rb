@@ -32,12 +32,12 @@ describe CaptainHoog::PreGit do
 
     describe "#configure" do
       let(:plugins_path) do
-        File.join(File.dirname(__FILE__),
+        [File.join(File.dirname(__FILE__),
                   "..",
                   "..",
                   "fixtures",
                   "plugins",
-                  "test_plugins")
+                  "test_plugins")]
       end
 
       before do

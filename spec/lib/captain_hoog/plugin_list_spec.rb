@@ -21,11 +21,20 @@ describe CaptainHoog::PluginList do
                   'passing')
       end
 
+      let(:shared_plugin_dir) do
+        File.join(File.dirname(__FILE__),
+                  '..', '..',
+                  'fixtures',
+                  'plugins',
+                  'shared',
+                  'passing')
+      end
+
       let(:config) do
         {
           'exclude' => %w(mat git log),
-          'pre-commit' => %w(rspec),
-          'plugins_dir' => plugin_dir_path
+          'pre-commit' => %w(rspec shared),
+          'plugins_dir' => [plugin_dir_path, shared_plugin_dir]
         }
       end
 
@@ -34,7 +43,7 @@ describe CaptainHoog::PluginList do
       end
 
       it 'returns available plugins' do
-        expect(subject.plugins).to eq %w(rspec)
+        expect(subject.plugins).to eq %w(rspec shared)
       end
 
     end
