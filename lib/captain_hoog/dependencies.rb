@@ -1,2 +1,5 @@
 require 'colorize'
 require 'terminal-table'
+require 'yaml'
+require 'ostruct'
+require 'erb'
