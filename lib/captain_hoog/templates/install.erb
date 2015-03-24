@@ -3,7 +3,7 @@ require 'captain_hoog'
 require 'yaml'
 
 # read config
-hoog_config = Hoogfile.config('<%= config[:root_dir] %>')
+hoog_config = CaptainHoog::Hoogfile.config('<%= config[:root_dir] %>')
 
 # Adjust settings
 CaptainHoog::PreGit.configure do |config|

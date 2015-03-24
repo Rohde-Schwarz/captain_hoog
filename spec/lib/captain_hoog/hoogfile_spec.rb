@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Hoogfile do
+describe CaptainHoog::Hoogfile do
   let(:path) do
     File.expand_path(File.join(File.dirname(__FILE__),
                               '..', '..','fixtures'))
@@ -33,7 +33,7 @@ describe Hoogfile do
       subject{ described_class.read(path) }
 
       it 'returns an instance of Hoogfile' do
-        expect(subject).to be_instance_of(Hoogfile)
+        expect(subject).to be_instance_of(CaptainHoog::Hoogfile)
       end
 
       it 'evaluates erb' do
