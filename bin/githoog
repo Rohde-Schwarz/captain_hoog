@@ -2,6 +2,7 @@
 
 require 'thor'
 require 'colorize'
+require 'pathname'
 
 class GitHookInstall < Thor
   include Thor::Actions
