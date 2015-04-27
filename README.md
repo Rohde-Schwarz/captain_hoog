@@ -92,8 +92,6 @@ pre-commit:
 
 So the plugins named **cucumber** and **rspec** are running before your commit applies to the index.
 
-
-
 ### Migrating from pre 1.0 versions
 
 There is no migration path from previous versions. Just re-install and adjust the Hoogfile to your previous configuration.  
@@ -111,7 +109,7 @@ Within ```test``` any stuff is done that either forces the commit to exit or
 to pass. Whatever you want to do like syntax checking, code style checking -
 implement it and make sure you return a boolean value.
 
-```message``` is used to define a notifiaction that is shown to the user if
+```message``` is used to define a notification that is shown to the user if
 the test **fails**. This obviously must return a String.  
 
 You have to add a description (or name) to your plugin, this description (or name) will be used to check if the plugin should be executed or not by adding the plugins name to the section <hook plugins per type> of your Hoogfile.
@@ -164,6 +162,27 @@ git.describe 'name of Git head' do |pre|
 end
 
 ```
+
+
+**Plugin specific configurations**
+
+Sometimes a plugin needs specific configurations that not match the use of a helper method. You can add plugin configurations to your Hoogfile by adding a section that is named after the plugin. Let's say there is a plugin called 'clear logs' that needs a 'truncate_line_numbers' configuration. The Hoogfile section would look like:
+
+```yaml
+clear logs:
+  truncate_line_numbers: 100
+```
+
+You are able to access this configuration within your plugin by using the ```config``` method:
+
+```rb
+git.describe 'clear logs' do |pre|
+  pre.run do
+    system "sed -i '#{config.truncate_line_numbers},$ d' development.log"
+  end
+end
+```
+
 
 ## Last stuff
 

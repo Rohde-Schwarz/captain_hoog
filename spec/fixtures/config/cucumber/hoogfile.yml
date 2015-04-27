@@ -1,0 +1,13 @@
+plugins_dir:
+  - <%=  File.expand_path(File.join(File.dirname(__FILE__),
+                                            "plugins",
+                                            "test_plugins",
+                                            "passing")) %>
+
+project_dir: <%= File.expand_path(File.join(File.dirname(__FILE__),"with_git" )) %>
+
+pre-commit:
+  - simple
+
+simple:
+  runtime_count: <%= a = 0; 12.times { |i| a += 1 }; a %>

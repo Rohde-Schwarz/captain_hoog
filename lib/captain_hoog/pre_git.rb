@@ -7,7 +7,8 @@ module CaptainHoog
                     :plugins_dir,
                     :headline_on_success,
                     :headline_on_failure,
-                    :suppress_headline
+                    :suppress_headline,
+                    :plugins_conf
     end
 
     # Public: Runs the hook.
@@ -66,7 +67,8 @@ module CaptainHoog
 
     def prepare_env
       env = Env.new
-      env[:project_dir] = self.class.project_dir
+      env[:project_dir]    = self.class.project_dir
+      env[:plugins_config] = self.class.plugins_conf
       env
     end
 

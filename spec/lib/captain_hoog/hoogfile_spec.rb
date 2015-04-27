@@ -3,7 +3,7 @@ require 'spec_helper'
 describe CaptainHoog::Hoogfile do
   let(:path) do
     File.expand_path(File.join(File.dirname(__FILE__),
-                              '..', '..','fixtures'))
+                              '..', '..','fixtures', 'config', 'spec'))
   end
 
   let(:plugins_dir) do
@@ -38,6 +38,9 @@ describe CaptainHoog::Hoogfile do
 
       it 'evaluates erb' do
         expect(subject.plugins_dir).to include(plugins_dir)
+        expect(subject.plugins_env).to have_key('foo plugin')
+        expect(subject.plugins_env['foo plugin']).to be_instance_of(Hash)
+        expect(subject.plugins_env['foo plugin']).to have_key('bar')
       end
     end
 

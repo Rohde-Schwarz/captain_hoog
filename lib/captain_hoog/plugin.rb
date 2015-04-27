@@ -42,6 +42,14 @@ module CaptainHoog
       }
     end
 
+    # Public: Provides access to the configuration section in the hoogfile
+    # with the plugin's name.
+    #
+    # Returns the value of the key.
+    def config
+      Struct.new(env[:plugins_config].send(git.plugin_name))
+    end
+
     private
 
     def eigenplugin

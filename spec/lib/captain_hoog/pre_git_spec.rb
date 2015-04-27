@@ -37,7 +37,9 @@ describe CaptainHoog::PreGit do
                   "..",
                   "fixtures",
                   "plugins",
-                  "test_plugins")]
+                  "test_plugins",
+                  "passing",
+                  "pure")]
       end
 
       before do
@@ -73,7 +75,7 @@ describe CaptainHoog::PreGit do
       let(:plugins_list) do
         Class.new do
           def plugins
-            %w(simple)
+            %w(foo)
           end
 
           def has?(plugin)

@@ -1,0 +1,8 @@
+- pre-push
+- pre-commit
+- applypatch-msg
+- post-update
+- pre-applypatch
+- pre-rebase
+- prepare-commit-msg
+- update

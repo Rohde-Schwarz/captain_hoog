@@ -1,7 +1,7 @@
 git.describe "simple" do |pre|
 
   pre.test do
-    true
+    config.runtime_count / 12 == 1
   end
 
   pre.message do
