@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name                 = "captain_hoog"
   spec.version              = CaptainHoog::VERSION
   spec.authors              = ["Daniel Schmidt"]
-  spec.email                = ["daniel.schmidt@adytonsystems.com"]
+  spec.email                = ["daniel.schmidt@gateprotect.com"]
   spec.summary              = %q{ Plugin based git-pre hook.}
   spec.homepage             = ""
   spec.license              = "MIT"
