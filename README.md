@@ -1,5 +1,7 @@
 # CaptainHoog
 
+[![Build Status](https://travis-ci.org/GateprotectGmbH/captain_hoog.svg)](https://travis-ci.org/GateprotectGmbH/captain_hoog)
+
 Okay. That's not such a funny gem name. But it's a reference to Git and the subject
 of the gem: the Git Hooks.
 
