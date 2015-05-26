@@ -19,6 +19,8 @@ class GitHookInstall < Thor
   class_option :project_dir, type: :string, default: Dir.getwd
   class_option :plugins_dir, type: :string, default: Dir.getwd
 
+  map %w[--version -v] => :__print_version
+
   desc "install","Installs the hook into your Git repository"
   def install(*args)
     check_if_git_present
@@ -54,6 +56,11 @@ class GitHookInstall < Thor
       move_hook(options)
       puts "The #{options[:from]} hook is moved to #{options[:to]} hook.".green
     end
+  end
+  
+  desc "version, -v", "Prints out the version"
+  def __print_version 
+    puts CaptainHoog::VERSION
   end
 
   private

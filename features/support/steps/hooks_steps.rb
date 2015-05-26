@@ -42,6 +42,14 @@ Then(/^a "(.*?)" hook file did not exists$/) do |hook_type|
   expect(File.exists?(hooks_path(hook_type))).to be false
 end
 
+Given(/^I type in "(.*?)"$/) do |arg1|
+  run_simple(arg1)
+end
+
+Then(/^I should see the current version$/) do
+  expect(all_stdout.split(/\n/).first).to match(/\d{1,}.\d{1,}.\d{1,}/)
+end
+
 When(/^I run the move script with "(.*?)" from flag and "(.*?)" to flag$/) do |from, to|
   cmd = "ruby #{bin_path}/bin/githoog move --from #{from} --to #{to}"
   run_simple(unescape(cmd), false)
