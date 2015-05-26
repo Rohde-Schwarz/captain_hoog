@@ -28,7 +28,7 @@ module CaptainHoog
     #
     # Returns nothing
     def eval_plugin
-      instance_eval(@code)
+      instance_eval(@code) && git
     end
 
     # Public: Executes a plugin and stores the results in a Hash.
