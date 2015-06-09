@@ -41,7 +41,7 @@ describe CaptainHoog::Test::Sandbox do
         <<-PLUGIN
           git.describe 'foo' do |hook|
             hook.helper :foo_helper do
-              12
+              config.number
             end
 
             hook.test do
@@ -53,7 +53,15 @@ describe CaptainHoog::Test::Sandbox do
       end
 
       let(:sandbox) do
-        CaptainHoog::Test::Sandbox.new(plugin, config)
+        plugins_config = {
+          plugin: {
+            foo: {
+              number: 12
+            }
+          }
+        }
+        cfg = config.merge(plugins_config)
+        CaptainHoog::Test::Sandbox.new(plugin, cfg)
       end
 
       before do
@@ -66,9 +74,19 @@ describe CaptainHoog::Test::Sandbox do
         expect(sandbox.plugin.foo_helper).to eq 12
       end
 
-      describe "#plugin", :skip do
+      describe "#plugin" do
         it 'provides #result' do
           expect(sandbox.plugin).to respond_to(:result)
+        end
+
+        it 'provides access to helper' do
+          expect(sandbox.plugin.foo_helper).to eq 12
+        end
+
+        describe '#result' do
+          it 'has :test key' do
+            expect(sandbox.plugin.result).to have_key(:test)
+          end
         end
       end
     end
