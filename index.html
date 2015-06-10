@@ -1,0 +1,236 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Captain hoog by GateprotectGmbH</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Captain hoog</h1>
+        <p>A Git hook-hook engine written in Ruby</p>
+
+        <p class="view"><a href="https://github.com/GateprotectGmbH/captain_hoog">View the Project on GitHub <small>GateprotectGmbH/captain_hoog</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/GateprotectGmbH/captain_hoog/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/GateprotectGmbH/captain_hoog/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/GateprotectGmbH/captain_hoog">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="captainhoog" class="anchor" href="#captainhoog" aria-hidden="true"><span class="octicon octicon-link"></span></a>CaptainHoog</h1>
+
+<p><a href="https://travis-ci.org/GateprotectGmbH/captain_hoog"><img src="https://travis-ci.org/GateprotectGmbH/captain_hoog.svg" alt="Build Status"></a></p>
+
+<p>Okay. That's not such a funny gem name. But it's a reference to Git and the subject
+of the gem: the Git Hooks.</p>
+
+<p><img src="http://dyxygd30hex7h.cloudfront.net/sites/www.prismaticart.com/files/PRISMATIC_ADAM.jpg" height="450"></p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Add this line to your application's Gemfile:</p>
+
+<pre><code>gem 'captain_hoog'
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre><code>$ bundle
+</code></pre>
+
+<p>Or install it yourself as:</p>
+
+<pre><code>$ gem install captain_hoog
+</code></pre>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<h3>
+<a id="install-the-hook" class="anchor" href="#install-the-hook" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install the hook</h3>
+
+<pre><code>githoog install --type &lt;GIT_HOOK_TYPE&gt; --plugins_dir &lt;PATH_TO_PLUGINS&gt; --project_dir &lt;PATH_TO_PROJECT&gt;
+</code></pre>
+
+<p><strong>Please note:</strong>  <code>&lt;PATH_TO_PLUGINS&gt;</code> and <code>&lt;PATH_TO_PROJECT&gt;</code> must be given as absolute paths.
+Also make sure to run this from your git repository's root folder.</p>
+
+<p><code>GIT_HOOK_TYPE</code> may be something like this</p>
+
+<ul>
+<li>pre-commit (default)</li>
+<li>pre-push</li>
+<li>pre-rebase</li>
+<li>pre-applypatch</li>
+</ul>
+
+<p>If the directory where pre-git test should be done, differs from the working directory adjust:</p>
+
+<pre><code>--project_dir
+</code></pre>
+
+<p>to your needs. You can omit this.</p>
+
+<pre><code>--plugins_dir
+</code></pre>
+
+<p>is not required anymore. If it's omited it will point to the actual directory you run the install script from. It should point to the directory you store the CaptainHoog plugins.</p>
+
+<p><em>A note about plugin directories:</em> To have more than one plugin directory used, just add as many plugin directories as you want do the <code>plugins_dir</code> section in the Hoogfile. You can select which plugin is called from which Git hook later by defining it in the Hoogfile.</p>
+
+<h3>
+<a id="removing-the-hook" class="anchor" href="#removing-the-hook" aria-hidden="true"><span class="octicon octicon-link"></span></a>Removing the hook</h3>
+
+<p>Remove a hook by using the</p>
+
+<pre><code>githoog remove --type &lt;GIT_HOOK_TYPE&gt;
+</code></pre>
+
+<p>command.</p>
+
+<p>where <code>&lt;GIT_HOOK_TYPE&gt;</code> is <code>pre-commit</code> by default.</p>
+
+<h3>
+<a id="the-hoogfile" class="anchor" href="#the-hoogfile" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Hoogfile</h3>
+
+<p>All plugin executable and ignoring power is configurable in the Hoogfile. The Hoogfile's name is <code>hoogfile.yml</code> and it will be installed in your Git root directory. If you install several hooks, the installer will ask you if you want to override the config file.</p>
+
+<p>The Hoogfile has several sections:</p>
+
+<ul>
+<li>hook plugins per type</li>
+<li>project dir</li>
+<li>plugins dir</li>
+</ul>
+
+<p>Some options are predefined from your information you provided during installation:</p>
+
+<ul>
+<li>project dir</li>
+<li>plugins dir</li>
+</ul>
+
+<p>If this did not matches your need anymore, just pass the new paths in there.</p>
+
+<p>Captain Hoog is doing nothing by default. You have explicitly define which plugins it should run or which not. You do this per hook type. E.g. for <code>pre-commit</code>:</p>
+
+<pre><code>pre-commit:
+  - cucumber
+  - rspec
+</code></pre>
+
+<p>So the plugins named <strong>cucumber</strong> and <strong>rspec</strong> are running before your commit applies to the index.</p>
+
+<h3>
+<a id="migrating-from-pre-10-versions" class="anchor" href="#migrating-from-pre-10-versions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Migrating from pre 1.0 versions</h3>
+
+<p>There is no migration path from previous versions. Just re-install and adjust the Hoogfile to your previous configuration.  </p>
+
+<h3>
+<a id="writing-plugins" class="anchor" href="#writing-plugins" aria-hidden="true"><span class="octicon octicon-link"></span></a>Writing plugins</h3>
+
+<p>A CaptainHoog plugin is written with a very simple DSL that used with the following expressions:</p>
+
+<ul>
+<li><code>test</code></li>
+<li><code>message</code></li>
+<li><code>helper</code></li>
+<li><code>run</code></li>
+</ul>
+
+<p>Within <code>test</code> any stuff is done that either forces the commit to exit or
+to pass. Whatever you want to do like syntax checking, code style checking -
+implement it and make sure you return a boolean value.</p>
+
+<p><code>message</code> is used to define a notification that is shown to the user if
+the test <strong>fails</strong>. This obviously must return a String.  </p>
+
+<p>You have to add a description (or name) to your plugin, this description (or name) will be used to check if the plugin should be executed or not by adding the plugins name to the section  of your Hoogfile.</p>
+
+<div class="highlight highlight-rb"><pre>git.describe <span class="pl-s"><span class="pl-pds">'</span>sample<span class="pl-pds">'</span></span> <span class="pl-k">do </span>|<span class="pl-smi">pre</span>|
+
+  pre.test <span class="pl-k">do</span>
+    <span class="pl-c"># do any test like code style guide, syntax checking...</span>
+    <span class="pl-c"># Must return a boolean value.</span>
+  <span class="pl-k">end</span>
+
+  pre.message <span class="pl-k">do</span>
+    <span class="pl-c"># Define a message string here that is shown if the test fails.</span>
+  <span class="pl-k">end</span>
+
+<span class="pl-k">end</span>  </pre></div>
+
+<p>With <code>helper</code> you can extract some logic into a helper method that is useable anywhere
+in the plugin.</p>
+
+<div class="highlight highlight-rb"><pre>git.describe <span class="pl-s"><span class="pl-pds">'</span>logger<span class="pl-pds">'</span></span> <span class="pl-k">do </span>|<span class="pl-smi">pre</span>|
+
+  pre.helper <span class="pl-c1">:collect_logger_outputs</span> <span class="pl-k">do</span>
+    <span class="pl-c"># do something</span>
+  <span class="pl-k">end</span>
+
+  pre.test <span class="pl-k">do</span>
+    collect_logger_outputs.empty?
+  <span class="pl-k">end</span>
+
+  pre.message <span class="pl-k">do</span>
+   <span class="pl-s"><span class="pl-pds">%q{</span> You have some logger outputs in your code! <span class="pl-pds">}</span></span>
+  <span class="pl-k">end</span>
+<span class="pl-k">end</span></pre></div>
+
+<p>If you don't want to test anything before commiting or pushing thus just running
+a command or something similiar, use the <code>run</code> method.</p>
+
+<div class="highlight highlight-rb"><pre>git.describe <span class="pl-s"><span class="pl-pds">'</span>name of Git head<span class="pl-pds">'</span></span> <span class="pl-k">do </span>|<span class="pl-smi">pre</span>|
+
+  pre.run <span class="pl-k">do</span>
+    system <span class="pl-s"><span class="pl-pds">"</span>git show --name-only HEAD<span class="pl-pds">"</span></span>
+  <span class="pl-k">end</span>
+
+<span class="pl-k">end</span>
+</pre></div>
+
+<p><strong>Plugin specific configurations</strong></p>
+
+<p>Sometimes a plugin needs specific configurations that not match the use of a helper method. You can add plugin configurations to your Hoogfile by adding a section that is named after the plugin. Let's say there is a plugin called 'clear logs' that needs a 'truncate_line_numbers' configuration. The Hoogfile section would look like:</p>
+
+<div class="highlight highlight-yaml"><pre><span class="pl-s"><span class="pl-ent">clear logs:</span></span>
+  <span class="pl-c1"><span class="pl-ent">truncate_line_numbers:</span> 100</span></pre></div>
+
+<p>You are able to access this configuration within your plugin by using the <code>config</code> method:</p>
+
+<div class="highlight highlight-rb"><pre>git.describe <span class="pl-s"><span class="pl-pds">'</span>clear logs<span class="pl-pds">'</span></span> <span class="pl-k">do </span>|<span class="pl-smi">pre</span>|
+  pre.run <span class="pl-k">do</span>
+    system <span class="pl-s"><span class="pl-pds">"</span>sed -i '<span class="pl-pse">#{</span><span class="pl-s1">config.truncate_line_numbers</span><span class="pl-pse"><span class="pl-s1">}</span></span>,$ d' development.log<span class="pl-pds">"</span></span>
+  <span class="pl-k">end</span>
+<span class="pl-k">end</span></pre></div>
+
+<h2>
+<a id="last-stuff" class="anchor" href="#last-stuff" aria-hidden="true"><span class="octicon octicon-link"></span></a>Last stuff</h2>
+
+<p>Init and written by Daniel Schmidt (<a href="mailto:daniel.schmidt@gateprotect.com">daniel.schmidt@gateprotect.com</a>)</p>
+
+<p>Image "Captain Hook" © 2012 Brian Patterson</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/GateprotectGmbH">GateprotectGmbH</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
