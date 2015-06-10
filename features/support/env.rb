@@ -3,11 +3,13 @@ require 'aruba/cucumber'
 
 require 'rspec/expectations'
 
-FIXTURES_PATH = File.expand_path(File.join(File.dirname(__FILE__),
+SPEC_PATH = File.expand_path(File.join(File.dirname(__FILE__),
                              "..",
                              "..",
-                             "spec",
-                             "fixtures"))
+                             "spec"))
+
+FIXTURES_PATH  = File.join(SPEC_PATH, "fixtures")
+HOOK_SPEC_PATH = File.join(SPEC_PATH, "hooks")
 
 Before do
   $git_fixture_dir_exists ||= false
@@ -21,6 +23,9 @@ Before do
     end
   end
   $git_fixture_dir_exists = true
+  unless File.exists?(HOOK_SPEC_PATH)
+    FileUtils.mkdir(HOOK_SPEC_PATH)
+  end
 end
 
 
@@ -39,5 +44,6 @@ After do
                               ".git",
                               "hooks",
                               hook_type))
+    FileUtils.rm_rf(HOOK_SPEC_PATH)
   end
 end

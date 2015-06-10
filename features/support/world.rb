@@ -27,6 +27,10 @@ module FileWorld
   def hook_config_file_path
     git_project_path.join('hoogfile.yml')
   end
+
+  def write_file(path, file_content)
+    File.open(path, 'w') { |file| file.write(file_content) }
+  end
 end
 
 World(FileWorld)

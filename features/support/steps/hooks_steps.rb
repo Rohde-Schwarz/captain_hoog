@@ -69,3 +69,28 @@ Then(/^the config file includes the "(.*?)" directory$/) do |config_path|
   expect(config).to have_key("#{config_path}_dir")
   expect(config["#{config_path}_dir"]).to include @dir
 end
+
+Given(/^I wrote a spec "([^"]*)" containing:$/) do |name, content|
+  spec_name = File.expand_path(File.join(File.dirname(__FILE__),
+                        '..',
+                        '..',
+                        '..',
+                        'spec',
+                        'hooks',
+                        "#{name}.rb"))
+  write_file(spec_name, content)
+end
+
+When(/^I run the spec "([^"]*)"$/) do |spec_name|
+  path = File.join(HOOK_SPEC_PATH, "#{spec_name}.rb")
+  cmd = "bundle exec rspec #{path}"
+  @spec_executed = true
+  run_simple(unescape(cmd), false)
+end
+
+Then(/^I should see the test is passing with "([^"]*)" example and "([^"]*)" failures$/) do |success_count, failure_count|
+  if @spec_executed
+    result = all_stdout.split(/\n/).last
+    expect(result).to match(/#{success_count} (example|examples), #{failure_count} failures/)
+  end
+end
