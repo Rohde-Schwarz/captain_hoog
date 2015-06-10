@@ -112,6 +112,7 @@ describe CaptainHoog::Test::Sandbox do
                     "plugins",
                     "test_plugins",
                     "passing",
+                    "simple",
                     "simple.rb"))
       end
       let(:sandbox) do

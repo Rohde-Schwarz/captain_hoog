@@ -110,9 +110,15 @@ module CaptainHoog
     end
 
     def read_plugins_from_dir(dir, env)
-      Dir["#{dir}/**/**.rb"].each do |plugin|
-        code = File.read(plugin)
-        @plugins << Plugin.new(code, env)
+      unless File.basename(dir).match(/test/)
+        Dir["#{dir}/**"].each do |file|
+          if File.directory?(file)
+            read_plugins_from_dir(file, env)
+          else
+            code = File.read(file)
+            @plugins << Plugin.new(code,env)
+          end
+        end
       end
     end
 
