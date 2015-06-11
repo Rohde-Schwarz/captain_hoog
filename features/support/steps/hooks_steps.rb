@@ -71,14 +71,11 @@ Then(/^the config file includes the "(.*?)" directory$/) do |config_path|
 end
 
 Given(/^I wrote a spec "([^"]*)" containing:$/) do |name, content|
-  spec_name = File.expand_path(File.join(File.dirname(__FILE__),
-                        '..',
-                        '..',
-                        '..',
-                        'spec',
-                        'hooks',
-                        "#{name}.rb"))
-  write_file(spec_name, content)
+  write_spec(name, content)
+end
+
+Given(/^I wrote a test "([^"]*)" containing:$/) do |name, content|
+  write_spec(name, content)
 end
 
 When(/^I run the spec "([^"]*)"$/) do |spec_name|
@@ -88,9 +85,20 @@ When(/^I run the spec "([^"]*)"$/) do |spec_name|
   run_simple(unescape(cmd), false)
 end
 
+When(/^I run the test "([^"]*)"$/) do |test_name|
+  path = File.join(HOOK_SPEC_PATH, "#{test_name}.rb")
+  @cmd = "ruby #{path}"
+  @test_executed = true
+  run_simple(unescape(@cmd), false)
+end
+
 Then(/^I should see the test is passing with "([^"]*)" example and "([^"]*)" failures$/) do |success_count, failure_count|
   if @spec_executed
     result = all_stdout.split(/\n/).last
     expect(result).to match(/#{success_count} (example|examples), #{failure_count} failures/)
+  end
+  if @test_executed
+    output = output_from(@cmd).split(/\n/).last
+    expect(output).to match(/\d+ runs, #{success_count} assertions, #{failure_count} failures/)
   end
 end

@@ -31,6 +31,17 @@ module FileWorld
   def write_file(path, file_content)
     File.open(path, 'w') { |file| file.write(file_content) }
   end
+
+  def write_spec(name, file_content)
+    spec_name = File.expand_path(File.join(File.dirname(__FILE__),
+                          '..',
+                          '..',
+                          'spec',
+                          'hooks',
+                          "#{name}.rb"))
+    write_file(spec_name, file_content)
+  end
+  
 end
 
 World(FileWorld)
