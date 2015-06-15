@@ -99,9 +99,9 @@ Feature: Testing a hook plugin
       end
 
       def test_result
-        assert_equal plugin.result[:test], true
+        assert_equal @plugin.result[:test], true
       end
     end
     """
     When I run the test "divide_test"
-    Then I should see the test is passing with "2" example and "0" failures
+    Then I should see the test is passing with "3" example and "0" failures
