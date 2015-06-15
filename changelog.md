@@ -1,3 +1,10 @@
+## 1.1.0 (2015-06-15)
+
+Features:
+
+  - test support (out-of-the-box RSpec, other frameworks with sandboxing)
+  - new plugin structure (old structure supported as well)
+
 ## 1.0.2 (2015-05-27)
 
 Features:

@@ -165,6 +165,16 @@ end
 
 ```
 
+**Plugin file structure**
+
+A common way to organize plugins is:
+
+```
+<plugin_name>/
+	- <plugin_name>.rb
+	- test/
+		- <plugin_name>_[spec|test].rb
+```
 
 **Plugin specific configurations**
 
@@ -185,6 +195,191 @@ git.describe 'clear logs' do |pre|
 end
 ```
 
+## Test Support
+
+### Sandbox 
+
+For testing purposes, Captain Hoog uses some kind of sandboxing. You're able to use the sandbox directly (you have to do this by now for any other test frameworks than RSpec).
+
+Using the sandbox is easy: 
+
+```ruby
+sandbox = CaptainHoog::Test::Sandbox.new(plugin_code, cfg)
+sandbox.run
+# then have full access to the plugin by using sandbox.plugin
+``` 
+
+You have to pass the plugin as String or File object and a configuration hash to the sandbox. 
+The configuration hash might consist of a global (the ```env```) and a plugin specific configuration (marked by using the plugins name as key).
+
+Example: 
+
+```rb
+plugin_code = <<-PLUGIN
+  git.describe 'foo' do |hook|
+    hook.helper :foo_helper do
+      config.number
+    end
+
+    hook.test do
+      foo_helper
+      true
+    end
+
+    hook.message do
+      'Fun'
+    end
+  end
+PLUGIN
+
+cfg = {
+	env: {
+   		suppress_headline: true
+   },
+   plugin: {
+  		foo: {
+       	number: 12
+       }
+   }
+}
+sandbox = CaptainHoog::Test::Sandbox.new(plugin_code, cfg)
+sandbox.run
+sandbox.plugin.result[:test] # => true
+sandbox.plugin.foo_helper # => 12 
+sandbox.plugin.result[:message] # => Fun
+```
+
+**Note** that the sandbox will not provide you some fake file system. 
+
+### Frameworks
+
+Captain Hoog provides some small DSL for testing plugins if you're using RSpec. For the use of MiniTest (or any other testing framework, see the section below.)
+
+### RSpec
+
+Require test support by using
+
+```rb
+require 'captain_hoog/test'
+```
+
+There is no configuration needed, Captain Hoog will detect if you're using Rspec. 
+
+Then - as usual - add a ```describe``` block. Within this block you have access to a block helper: 
+
+```rb
+with_plugin :<PLUGIN_NAME>, config: <HASH>, silence: <true|false> do 
+	# ....
+end
+```
+
+|Argument| Description| 
+|:-------|:-----------|
+|PLUGIN_NAME | Plugin - as String or File object (given as a ```let``` or method) |
+|config | plugin configuration, see **Sandbox** section for details. |
+|silence | Truthy or falsy value, silences the plugin output |
+
+With ```with_plugin``` you have full access to the Captain Hoog plugin by using ```plugin```. 
+
+A full example: 
+
+```rb
+require 'rspec'
+require 'captain_hoog/test'
+
+describe 'Test for hook' do
+	let(:divide) do
+    	path = File.expand_path(File.join(File.dirname(__FILE__),
+                                        '..',
+                                        'fixtures',
+                                        'plugins',
+                                        'test_plugins',
+                                        'divide.rb'))
+       File.new(path)
+    end
+
+    let(:config) do
+    	{
+       	plugin: {
+          	divide: {
+                divider: 12,
+                compare_value: 1
+              }
+            }
+       }
+    end
+
+    with_plugin :divide, config: :config, silence: true do
+      describe 'helpers' do
+        describe '#divider' do
+          it 'returns 12 as Fixnum' do
+            expect(plugin.divider).to eq 12
+            expect(plugin.divider).to be_instance_of Fixnum
+          end
+        end
+
+        describe '#check_equal' do
+          it 'returns 1' do
+            expect(plugin.check_equal).to be 1
+          end
+        end
+      end
+
+      it 'exits with true' do
+        expect(plugin.result[:test]).to be true
+      end
+    end
+end
+```
+
+### Other Test Frameworks (MiniTest, TestUnit ...) 
+
+You have to use the sandbox directly. See an example using MiniTest below.
+
+```rb
+gem 'minitest'
+require 'minitest/autorun'
+require 'minitest/unit'
+require 'captain_hoog'
+require 'captain_hoog/test'
+
+class DividePluginTest < Minitest::Test
+  def setup
+  	config = {
+   		env: {
+      		suppress_headline: true
+    	},
+    	plugin: {
+      		divide: {
+        		divider: 12,
+        		compare_value: 1
+      		}
+    	}
+  	}
+  	path = File.expand_path(File.join(File.dirname(__FILE__),
+                                      '..',
+                                      'fixtures',
+                                      'plugins',
+                                      'test_plugins',
+                                      'divide.rb'))
+    sandbox = ::CaptainHoog::Test::Sandbox.new(File.new(path), config)
+    sandbox.run
+    @plugin = sandbox.plugin
+  end
+
+  def test_helper_divider
+    assert_equal @plugin.divider, 12
+  end
+
+  def test_helper_divider_class
+    assert_instance_of Fixnum, @plugin.divider
+  end
+
+  def test_result
+    assert_equal plugin.result[:test], true
+  end
+end
+```
 
 ## Last stuff
 
