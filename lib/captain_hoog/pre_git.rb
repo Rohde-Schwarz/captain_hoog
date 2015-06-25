@@ -115,8 +115,10 @@ module CaptainHoog
           if File.directory?(file)
             read_plugins_from_dir(file, env)
           else
-            code = File.read(file)
-            @plugins << Plugin.new(code,env)
+            if File.extname(file).eql?(".rb")
+              code = File.read(file)
+              @plugins << Plugin.new(code,env)
+            end
           end
         end
       end
