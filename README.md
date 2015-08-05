@@ -26,7 +26,7 @@ Or install it yourself as:
 ### Install the hook
 
 ```
-githoog install --type <GIT_HOOK_TYPE> --plugins_dir <PATH_TO_PLUGINS> --project_dir <PATH_TO_PROJECT>
+hoog install --type <GIT_HOOK_TYPE> --plugins_dir <PATH_TO_PLUGINS> --project_dir <PATH_TO_PROJECT>
 ```
 
 **Please note:**  ```<PATH_TO_PLUGINS>``` and ```<PATH_TO_PROJECT>``` must be given as absolute paths.
@@ -60,7 +60,7 @@ _A note about plugin directories:_ To have more than one plugin directory used, 
 Remove a hook by using the
 
 ```
-githoog remove --type <GIT_HOOK_TYPE>
+hoog remove --type <GIT_HOOK_TYPE>
 ```
 
 command.
@@ -197,22 +197,22 @@ end
 
 ## Test Support
 
-### Sandbox 
+### Sandbox
 
 For testing purposes, Captain Hoog uses some kind of sandboxing. You're able to use the sandbox directly (you have to do this by now for any other test frameworks than RSpec).
 
-Using the sandbox is easy: 
+Using the sandbox is easy:
 
 ```ruby
 sandbox = CaptainHoog::Test::Sandbox.new(plugin_code, cfg)
 sandbox.run
 # then have full access to the plugin by using sandbox.plugin
-``` 
+```
 
-You have to pass the plugin as String or File object and a configuration hash to the sandbox. 
+You have to pass the plugin as String or File object and a configuration hash to the sandbox.
 The configuration hash might consist of a global (the ```env```) and a plugin specific configuration (marked by using the plugins name as key).
 
-Example: 
+Example:
 
 ```rb
 plugin_code = <<-PLUGIN
@@ -245,11 +245,11 @@ cfg = {
 sandbox = CaptainHoog::Test::Sandbox.new(plugin_code, cfg)
 sandbox.run
 sandbox.plugin.result[:test] # => true
-sandbox.plugin.foo_helper # => 12 
+sandbox.plugin.foo_helper # => 12
 sandbox.plugin.result[:message] # => Fun
 ```
 
-**Note** that the sandbox will not provide you some fake file system. 
+**Note** that the sandbox will not provide you some fake file system.
 
 ### Frameworks
 
@@ -263,25 +263,25 @@ Require test support by using
 require 'captain_hoog/test'
 ```
 
-There is no configuration needed, Captain Hoog will detect if you're using Rspec. 
+There is no configuration needed, Captain Hoog will detect if you're using Rspec.
 
-Then - as usual - add a ```describe``` block. Within this block you have access to a block helper: 
+Then - as usual - add a ```describe``` block. Within this block you have access to a block helper:
 
 ```rb
-with_plugin :<PLUGIN_NAME>, config: <HASH>, silence: <true|false> do 
+with_plugin :<PLUGIN_NAME>, config: <HASH>, silence: <true|false> do
 	# ....
 end
 ```
 
-|Argument| Description| 
+|Argument| Description|
 |:-------|:-----------|
 |PLUGIN_NAME | Plugin - as String or File object (given as a ```let``` or method) |
 |config | plugin configuration, see **Sandbox** section for details. |
 |silence | Truthy or falsy value, silences the plugin output |
 
-With ```with_plugin``` you have full access to the Captain Hoog plugin by using ```plugin```. 
+With ```with_plugin``` you have full access to the Captain Hoog plugin by using ```plugin```.
 
-A full example: 
+A full example:
 
 ```rb
 require 'rspec'
@@ -332,7 +332,7 @@ describe 'Test for hook' do
 end
 ```
 
-### Other Test Frameworks (MiniTest, TestUnit ...) 
+### Other Test Frameworks (MiniTest, TestUnit ...)
 
 You have to use the sandbox directly. See an example using MiniTest below.
 

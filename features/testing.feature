@@ -6,6 +6,15 @@ Feature: Testing a hook plugin
   Scenario: Testing a hook plugin with RSpec
     Given I wrote a spec "divide_spec" containing:
       """
+      require 'bundler'
+      require 'bundler/inline'
+
+      gemfile do
+        gem 'captain_hoog', path: File.expand_path('../../..', __FILE__)
+        gem 'rspec'
+        gem 'minitest'
+      end
+
       require 'rspec'
       require 'captain_hoog/test'
 
@@ -60,6 +69,15 @@ Feature: Testing a hook plugin
   Scenario: Testing a hook plugin with Minitest
     Given I wrote a test "divide_test" containing:
     """
+    require 'bundler'
+    require 'bundler/inline'
+
+    gemfile do
+      gem 'captain_hoog', path: File.expand_path('../../..', __FILE__)
+      gem 'rspec'
+      gem 'minitest'
+    end
+    
     gem 'minitest'
     require 'minitest/autorun'
     require 'minitest/unit'

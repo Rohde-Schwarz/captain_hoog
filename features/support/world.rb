@@ -1,6 +1,10 @@
 require 'pathname'
 
 module FileWorld
+  def executable
+    'hoog'
+  end
+
   def bin_path
     File.expand_path(File.join(File.dirname(__FILE__),
                                "..",
@@ -41,7 +45,7 @@ module FileWorld
                           "#{name}.rb"))
     write_file(spec_name, file_content)
   end
-  
+
 end
 
 World(FileWorld)
