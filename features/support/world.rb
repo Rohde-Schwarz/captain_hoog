@@ -5,6 +5,14 @@ module FileWorld
     'hoog'
   end
 
+  def hook_path
+    File.expand_path(File.join(File.dirname(__FILE__),
+                      "..",
+                      "..",
+                      "spec",
+                      "fixtures"))
+  end
+
   def bin_path
     File.expand_path(File.join(File.dirname(__FILE__),
                                "..",

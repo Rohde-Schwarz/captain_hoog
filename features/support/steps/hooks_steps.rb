@@ -1,23 +1,18 @@
 When(/^I run a commit hook that might succeeds$/) do
-  hook_path = File.expand_path(File.join(File.dirname(__FILE__),
-                               "..",
-                               "..",
-                               "..",
-                               "spec",
-                               "fixtures"))
   FileUtils.chdir(hook_path)
-
 end
 
 When(/^I run the install script with "(.*?)" type flag$/) do |commit_type|
   @dir = git_project_path.to_s
-  run_simple(unescape("ruby #{bin_path}/bin/#{executable} install --type #{commit_type} --plugins_dir #{@dir}"),
-            false)
+  @cmd =  "bundle exec #{bin_path}/bin/#{executable} install --type #{commit_type} "
+  @cmd += "--plugins_dir #{@dir}"
+  run_simple(unescape(@cmd), false)
 end
 
 When(/^I run the remove script with "(.*?)" type flag$/) do |commit_type|
-  run_simple(unescape("ruby #{bin_path}/bin/#{executable} remove --type #{commit_type} --plugins_dir /home"),
-            false)
+  @cmd =  "bundle exec #{bin_path}/bin/#{executable} remove --type #{commit_type} "
+  @cmd += "--plugins_dir /home"
+  run_simple(unescape(@cmd),false)
 end
 
 Given(/^I am in a directory that isnt a Git repository$/) do
@@ -51,12 +46,12 @@ Then(/^I should see the current version$/) do
 end
 
 When(/^I run the move script with "(.*?)" from flag and "(.*?)" to flag$/) do |from, to|
-  cmd = "ruby #{bin_path}/bin/#{executable} move --from #{from} --to #{to}"
+  cmd = "bundle exec #{bin_path}/bin/#{executable} move --from #{from} --to #{to}"
   run_simple(unescape(cmd), false)
 end
 
 When(/^I run the install script without "(.*?)" flag$/) do |type_flag|
-  cmd = "ruby #{bin_path}/bin/#{executable} install"
+  cmd = "bundle exec #{bin_path}/bin/#{executable} install"
   run_simple(unescape(cmd),false)
 end
 
@@ -103,4 +98,26 @@ Then(/^I should see the test is passing with "([^"]*)" example and "([^"]*)" fai
     output = output_from(@cmd).split(/\n/).last
     expect(output).to match(/\d+ runs, #{success_count} assertions, #{failure_count} failures/)
   end
+end
+
+Given(/^I run the init script with a custom home path$/) do
+  @cmd = "bundle exec #{bin_path}/bin/#{executable} init --home #{hook_path}"
+  run_simple(unescape(@cmd),false)
+end
+
+Then(/^it should create a \.hoog directory$/) do
+  expect(File.exists?(File.join(hook_path, '.hoog'))).to be true
+end
+
+Then(/^inside the \.hoog directory a treasury directory exists$/) do
+  expect(File.exists?(File.join(hook_path, '.hoog', 'treasury'))).to be true
+end
+
+Then(/^the init script outputs "(.*?)"$/) do |line|
+  expect(output_from(@cmd)).to include line
+end
+
+
+Then(/^I get this scripts output$/) do
+  puts output_from(@cmd)
 end

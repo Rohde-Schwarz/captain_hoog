@@ -11,6 +11,7 @@ require "captain_hoog/pre_git"
 require "captain_hoog/plugin_list"
 require "captain_hoog/struct/hoog_struct"
 require "captain_hoog/hoogfile"
+require "captain_hoog/cli"
 
 module CaptainHoog
   # Your code goes here...
