@@ -20,8 +20,6 @@ module CaptainHoog
     def install(*args)
       check_if_git_present
       check_if_option_present("plugins_dir")
-      # deprecated:
-      # "#{options[:plugins_dir]}/#{options[:type]}"
       init_environment
       install_hook({ as: options[:type],
                      context: {
