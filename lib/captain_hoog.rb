@@ -1,18 +1,19 @@
-require "captain_hoog/version"
 require "captain_hoog/dependencies"
 require "captain_hoog/core_ext"
-require "captain_hoog/errors"
-require "captain_hoog/delegatable"
-require "captain_hoog/helper_table"
-require "captain_hoog/env"
-require "captain_hoog/git"
-require "captain_hoog/plugin"
-require "captain_hoog/pre_git"
-require "captain_hoog/plugin_list"
-require "captain_hoog/struct/hoog_struct"
-require "captain_hoog/hoogfile"
-require "captain_hoog/cli"
 
 module CaptainHoog
-  # Your code goes here...
+
+  autoload :Version,      'captain_hoog/version'
+  autoload :Errors,       'captain_hoog/errors/dsl_errors'
+  autoload :Delegatable,  'captain_hoog/delegatable'
+  autoload :HelperTable,  'captain_hoog/helper_table'
+  autoload :Env,          'captain_hoog/env'
+  autoload :Git,          'captain_hoog/git'
+  autoload :Plugin,       'captain_hoog/plugin'
+  autoload :PreGit,       'captain_hoog/pre_git'
+  autoload :PluginList,   'captain_hoog/plugin_list'
+  autoload :Struct,       'captain_hoog/struct/hoog_struct'
+  autoload :Hoogfile,     'captain_hoog/hoogfile'
+  autoload :Cli,          'captain_hoog/cli'
+
 end
