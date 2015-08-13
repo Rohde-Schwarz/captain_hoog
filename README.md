@@ -126,6 +126,10 @@ git.describe 'sample' do |pre|
 
   pre.message do
     # Define a message string here that is shown if the test fails.
+    # The message is printed out in red per default. If you don't want
+    # a color pass color: :none to the helper method. Or if you want a
+    # specific color, the color as symbol:
+    # pre.message(color: :none) do ....
   end
 
 end  

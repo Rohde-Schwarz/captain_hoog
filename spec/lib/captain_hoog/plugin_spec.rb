@@ -90,7 +90,7 @@ describe CaptainHoog::Plugin do
 
         it "includes the test failure message at the :message key" do
           expect(subject).to have_key(:message)
-          expect(subject[:message]).to eq "Test failed."
+          expect(subject[:message].call).to eq "Test failed."
         end
 
       end

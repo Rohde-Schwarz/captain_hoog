@@ -153,7 +153,7 @@ describe CaptainHoog::Git do
           end.to_not raise_error
 
           plugin.eval_plugin
-          expect(plugin.execute[:message]).to eq "It's 12."
+          expect(plugin.execute[:message].call).to eq "It's 12."
         end
 
       end

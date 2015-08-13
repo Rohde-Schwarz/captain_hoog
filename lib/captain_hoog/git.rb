@@ -13,12 +13,31 @@ module CaptainHoog
       end
     end
 
-    def message
-      if block_given?
-        @message = yield
-        unless @message.is_a?(String)
-          raise CaptainHoog::Errors::MessageResultNotValidError
-        end
+    def message(color: :red, &blk)
+      if blk
+        @message = Class.new do
+          def initialize(color, body)
+            @body  = body.call
+            @color = color
+            check_msg(@body)
+          end
+
+          def call(no_color: true)
+            (no_color || will_have_no_color) ? @body : @body.send(@color)
+          end
+
+          private
+          def check_msg(msg)
+            unless msg.is_a?(String)
+              raise CaptainHoog::Errors::MessageResultNotValidError
+            end
+          end
+
+          def will_have_no_color
+            @color.eql?(:none)
+          end
+
+        end.new(color, blk)
       end
     end
 

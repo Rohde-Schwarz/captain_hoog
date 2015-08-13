@@ -78,10 +78,10 @@ module CaptainHoog
 
     def message_on_failure
       unless self.class.suppress_headline
-        puts defined_message_on(:failure).red
+        puts defined_message_on(:failure)
         puts "\n"
         @results.select{|result| not result[:result] }.each do |result|
-          puts result[:message].red
+          puts result[:message].call(no_color: false)
         end
       end
     end

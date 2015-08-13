@@ -72,7 +72,7 @@ module CaptainHoog
             git         = eigenplugin.instance_variable_get(:@git)
             {
               test: git.instance_variable_get(:@test_result),
-              message: git.instance_variable_get(:@message)
+              message: git.instance_variable_get(:@message).call
             }
           end
         end
