@@ -10,4 +10,8 @@ git.describe 'divide' do |hook|
   hook.test do
     (12/divider) == check_equal
   end
+
+  hook.message do
+    "Dividing fails"
+  end
 end

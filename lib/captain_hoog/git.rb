@@ -17,13 +17,18 @@ module CaptainHoog
       if blk
         @message = Class.new do
           def initialize(color, body)
-            @body  = body.call
+            @body  = body
             @color = color
-            check_msg(@body)
           end
 
           def call(no_color: true)
-            (no_color || will_have_no_color) ? @body : @body.send(@color)
+            (no_color || will_have_no_color) ? message : message.send(@color)
+          end
+
+          def message
+            message = @body.call
+            check_msg(message)
+            message
           end
 
           private

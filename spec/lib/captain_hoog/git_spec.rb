@@ -71,7 +71,7 @@ describe CaptainHoog::Git do
           expect do
             subject.message do
               1
-            end
+            end.message
           end.to raise_error(CaptainHoog::Errors::MessageResultNotValidError)
         end
       end
