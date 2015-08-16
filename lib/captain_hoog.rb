@@ -16,4 +16,8 @@ module CaptainHoog
   autoload :Hoogfile,     'captain_hoog/hoogfile'
   autoload :Cli,          'captain_hoog/cli'
 
+  module_function
+  def treasury_path
+    File.join(Dir.home, '.hoog', 'treasury')
+  end
 end

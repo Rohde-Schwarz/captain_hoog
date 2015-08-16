@@ -110,14 +110,30 @@ Then(/^it should create a \.hoog directory$/) do
 end
 
 Then(/^inside the \.hoog directory a treasury directory exists$/) do
-  expect(File.exists?(File.join(hook_path, '.hoog', 'treasury'))).to be true
+  expect(File.exists?(treasury_path)).to be true
 end
 
 Then(/^the init script outputs "(.*?)"$/) do |line|
   expect(output_from(@cmd)).to include line
 end
 
-
 Then(/^I get this scripts output$/) do
   puts output_from(@cmd)
+end
+
+When(/^I run a hoog named "(.*?)"$/) do |cmd|
+  @cmd = cmd
+  run_simple(unescape(@cmd), false)
+end
+
+Given(/^I pull a plugin repository into the treasury$/) do
+  repo_url = hook_git_repo_path
+  @cmd = "bundle exec #{bin_path}/bin/#{executable} treasury pull #{repo_url}"
+  @cmd += " --home #{treasury_path}"
+  run_simple(unescape(@cmd), false)
+end
+
+Then(/^the repository is installed in the treasury$/) do
+  step "I get this scripts output"
+  expect(File.exist?(File.join(treasury_path, 'neverland'))).to be true
 end

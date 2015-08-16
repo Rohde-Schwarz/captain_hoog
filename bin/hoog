@@ -2,4 +2,4 @@
 
 require 'captain_hoog'
 
-CaptainHoog::Cli.start(ARGV)
+CaptainHoog::Cli::Hoog.start(ARGV)

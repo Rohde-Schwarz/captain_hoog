@@ -36,6 +36,14 @@ module FileWorld
     path
   end
 
+  def treasury_path
+    File.join(hook_path, '.hoog', 'treasury')
+  end
+
+  def hook_git_repo_path
+    File.join(hook_path, 'neverland.git')
+  end
+
   def hook_config_file_path
     git_project_path.join('hoogfile.yml')
   end
