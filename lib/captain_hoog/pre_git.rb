@@ -1,15 +1,27 @@
 module CaptainHoog
   # Public: Entry class for handling a Pre-Something with plugins.
   class PreGit
-
-    class << self
-      attr_accessor :project_dir,
-                    :plugins_dir,
-                    :headline_on_success,
-                    :headline_on_failure,
-                    :suppress_headline,
-                    :plugins_conf
+    module PluginDirs
+      module_function
+      def collect(plugins_dir)
+        treasury_path = CaptainHoog.treasury_path
+        if File.exist?(treasury_path)
+          Dir["#{treasury_path}/**"].each_with_object(plugins_dir) do |dir, res|
+            res << dir if File.directory?(dir)
+          end
+        end
+      end
     end
+    
+    %i{ project_dir
+        headline_on_success
+        headline_on_failure
+        suppress_headline
+        plugins_conf }.each do |class_method|
+      singleton_class.send(:attr_accessor, class_method)
+    end
+
+    singleton_class.send(:attr_reader, :plugins_dir)
 
     # Public: Runs the hook.
     #
@@ -27,6 +39,12 @@ module CaptainHoog
     # Returns nothing.
     def self.configure
       yield(self) if block_given?
+    end
+
+    def self.plugins_dir=(plugins_dir)
+      @plugins_dir = []
+      PluginDirs.collect(@plugins_dir)
+      (@plugins_dir << plugins_dir).flatten!
     end
 
     def initialize(plugins_list = nil)

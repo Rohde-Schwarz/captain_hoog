@@ -1,6 +1,28 @@
 require 'spec_helper'
 
+module PreGitConfig
+  def configure(plugins_dir: [])
+    subject.configure do |config|
+      config.headline_on_success = "Success!"
+      config.headline_on_failure = "Failure!"
+      config.project_dir = File.dirname(__FILE__)
+      config.plugins_dir = plugins_dir
+      config.suppress_headline = true
+    end
+  end
+end
+
 describe CaptainHoog::PreGit do
+  include PreGitConfig
+  let(:plugins_path) do
+    [File.join(File.dirname(__FILE__),
+              "..",
+              "..",
+              "fixtures",
+              "plugins",
+              "test_plugins",
+              "passing")]
+  end
 
   describe "class methods" do
 
@@ -31,25 +53,8 @@ describe CaptainHoog::PreGit do
     end
 
     describe "#configure" do
-      let(:plugins_path) do
-        [File.join(File.dirname(__FILE__),
-                  "..",
-                  "..",
-                  "fixtures",
-                  "plugins",
-                  "test_plugins",
-                  "passing",
-                  "pure")]
-      end
-
       before do
-        subject.configure do |config|
-          config.headline_on_success = "Success!"
-          config.headline_on_failure = "Failure!"
-          config.project_dir = File.dirname(__FILE__)
-          config.plugins_dir = plugins_path
-          config.suppress_headline = true
-        end
+        configure(plugins_dir: plugins_path)
       end
 
       it "let you define the success headline message" do
@@ -65,7 +70,7 @@ describe CaptainHoog::PreGit do
       end
 
       it "let you define the plugins dir" do
-        expect(CaptainHoog::PreGit.plugins_dir).to eq plugins_path
+        expect(CaptainHoog::PreGit.plugins_dir.last).to eq plugins_path.first
       end
 
     end
@@ -90,6 +95,9 @@ describe CaptainHoog::PreGit do
       end
 
       it 'affects only configured plugins' do
+        allow(CaptainHoog).to receive(:treasury_path)
+                              .and_return(plugins_path.first)
+        configure
         pre_git = CaptainHoog::PreGit.run(plugins_list:plugins_list)
         expect(pre_git.instance_variable_get(:@results).size).to eq 1
       end
