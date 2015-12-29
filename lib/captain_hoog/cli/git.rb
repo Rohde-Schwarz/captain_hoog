@@ -4,7 +4,7 @@ module CaptainHoog
       module_function
 
       def is_git_repository?
-       File.exists?(File.join(Dir.getwd, ".git"))
+       File.exist?(File.join(Dir.getwd, ".git"))
       end
 
       def hooks_dir
@@ -20,7 +20,7 @@ module CaptainHoog
           puts "I can't detect a Git repository".red
           raise Thor::Error
         end
-      end      
+      end
     end
   end
 end

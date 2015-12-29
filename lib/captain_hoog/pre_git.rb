@@ -12,7 +12,7 @@ module CaptainHoog
         end
       end
     end
-    
+
     %i{ project_dir
         headline_on_success
         headline_on_failure
@@ -120,7 +120,7 @@ module CaptainHoog
     end
 
     def shared_plugins_dir_present?
-      File.exists?(shared_plugins_dir)
+      File.exist?(shared_plugins_dir)
     end
 
     def shared_plugins_dir

@@ -20,7 +20,7 @@ module CaptainHoog
       map %w[--version -v] => :__print_version
 
       desc "install","Installs the hook into your Git repository"
-      def install(*args)
+      def install(*_args)
         check_if_git_present
         check_if_option_present("plugins_dir")
         init_environment
@@ -35,7 +35,7 @@ module CaptainHoog
       end
 
       desc "remove", "Removes a hook from your Git repository"
-      def remove(*args)
+      def remove(*_args)
         check_if_git_present
         remove_hook(as: options[:type])
         puts "The #{options[:type]} hook is removed.".green
@@ -44,7 +44,7 @@ module CaptainHoog
       option :from, type: :string, required: true
       option :to, type: :string, required: true
       desc "move", "Moves a hook from type to another"
-      def move(*args)
+      def move(*_args)
         check_if_git_present
         if options[:from] == options[:to]
           puts "--from and --to arguments are the same".red
