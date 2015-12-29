@@ -15,6 +15,7 @@ module CaptainHoog
   autoload :Struct,       'captain_hoog/struct/hoog_struct'
   autoload :Hoogfile,     'captain_hoog/hoogfile'
   autoload :Cli,          'captain_hoog/cli'
+  autoload :Message,      'captain_hoog/message'
 
   module_function
   def treasury_path
