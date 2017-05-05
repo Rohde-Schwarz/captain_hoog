@@ -387,6 +387,6 @@ end
 
 ## Last stuff
 
-Init and written by Daniel Schmidt (daniel.schmidt@gateprotect.com)
+Init and written by Daniel Schmidt (daniel-a.schmidt@rohde-schwarz.com)
 
 Image "Captain Hook" © 2012 Brian Patterson
