@@ -8,6 +8,7 @@ module PreGitConfig
       config.project_dir = File.dirname(__FILE__)
       config.plugins_dir = plugins_dir
       config.suppress_headline = true
+      config.context = "pre-commit"
     end
   end
 end
@@ -50,6 +51,14 @@ describe CaptainHoog::PreGit do
 
     it "provides #configure" do
       expect(subject).to respond_to(:configure)
+    end
+
+    it "provides #context getter" do 
+      expect(subject).to respond_to(:context)
+    end
+
+    it "provides #context setter" do 
+      expect(subject).to respond_to(:context=)
     end
 
     describe "#configure" do

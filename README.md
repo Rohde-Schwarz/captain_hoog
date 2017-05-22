@@ -169,6 +169,20 @@ end
 
 ```
 
+Within all expressions you can use the ```env``` variable which provides you the 
+context the plugin is run in:
+
+```rb
+git.describe 'output the plugin context' do |pre|
+
+  pre.run do
+    puts env.context # might be 'pre-commit, pre-push etc ... 
+  end
+
+end
+
+```
+
 **Plugin file structure**
 
 A common way to organize plugins is:

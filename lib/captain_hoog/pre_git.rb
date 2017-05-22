@@ -17,7 +17,8 @@ module CaptainHoog
         headline_on_success
         headline_on_failure
         suppress_headline
-        plugins_conf }.each do |class_method|
+        plugins_conf
+        context }.each do |class_method|
       singleton_class.send(:attr_accessor, class_method)
     end
 
@@ -87,6 +88,7 @@ module CaptainHoog
       env = Env.new
       env[:project_dir]    = self.class.project_dir
       env[:plugins_config] = self.class.plugins_conf
+      env[:context ]       = self.class.context
       env
     end
 

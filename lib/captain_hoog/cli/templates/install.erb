@@ -9,6 +9,7 @@ CaptainHoog::PreGit.configure do |config|
   config.plugins_dir      = hoog_config.plugins_dir
   config.project_dir      = hoog_config.project_dir
   config.plugins_conf     = hoog_config.plugins_env
+  config.hook_type        = '<%=config[:type] %>'
   #config.headline_on_success = "All is fine."
   #config.headline_on_failure = "Oops. Something went wrong"
 end
