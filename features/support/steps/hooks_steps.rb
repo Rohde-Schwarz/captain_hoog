@@ -88,8 +88,6 @@ When(/^I run the test "([^"]*)"$/) do |test_name|
 end
 
 Then(/^I should see the test is passing with "([^"]*)" example and "([^"]*)" failures$/) do |success_count, failure_count|
-  #require 'pry'
-  #binding.pry
   if @spec_executed
     result = all_stdout.split(/\n/).last
     expect(result).to match(/#{success_count} (example|examples), #{failure_count} failures/)
