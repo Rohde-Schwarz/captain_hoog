@@ -1,9 +1,11 @@
 module CaptainHoog
   module Cli
     autoload :Git, 'captain_hoog/cli/git'
+    autoload :Pull, 'captain_hoog/cli/pull'
     class Hoog < Thor
       include Thor::Actions
       include Git
+      include Pull
 
       def self.exit_on_failure?
         true
@@ -13,17 +15,25 @@ module CaptainHoog
         File.join(File.dirname(__FILE__), "templates")
       end
 
+      def self.hookin_repo
+        "git@github.com:RSCSCybersecurity/hookins.git"
+      end
+
       class_option :type, type: :string, default: 'pre-commit'
       class_option :project_dir, type: :string, default: Dir.getwd
       class_option :plugins_dir, type: :string, default: Dir.getwd
 
       map %w[--version -v] => :__print_version
 
+      option :skip_hookins, type: :boolean, default: false 
+      option :silence, type: :boolean, default: false
       desc "install","Installs the hook into your Git repository"
       def install(*_args)
         check_if_git_present
         check_if_option_present("plugins_dir")
-        init_environment
+        init_environment(home_dir: Dir.home,
+                        silence: options[:silence],
+                        skip_hookins: options[:skip_hookins])
         install_hook({ as: options[:type],
                        context: {
                          root_dir: Dir.getwd,
@@ -101,7 +111,9 @@ module CaptainHoog
         template('hoogfile.erb', git_dir.join('hoogfile.yml'), opts)
       end
 
-      def init_environment(home_dir: Dir.home, silence: false)
+      def init_environment(home_dir: Dir.home, 
+                           silence: false,
+                           skip_hookins: false)
         environment_dir = File.join(home_dir, '.hoog')
         treasury_dir = File.join(environment_dir, 'treasury')
         if File.exist?(treasury_dir)
@@ -110,6 +122,7 @@ module CaptainHoog
           puts "Initializing treasury".green unless silence
           FileUtils.mkdir_p(treasury_dir)
         end
+        pull_and_clone(self.class.hookin_repo, treasury_dir) unless skip_hookins
       end
     end
   end
