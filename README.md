@@ -29,7 +29,11 @@ Or install it yourself as:
 hoog install --type <GIT_HOOK_TYPE> --plugins_dir <PATH_TO_PLUGINS> --project_dir <PATH_TO_PROJECT>
 ```
 
+Captain Hoog will install also a global ```.hoog``` directory in ```$HOME```. It will
+also pull the default hookins. If you don't want to have this pulled, use the ```--skip-hookins``` flags. 
+
 **Please note:**  ```<PATH_TO_PLUGINS>``` and ```<PATH_TO_PROJECT>``` must be given as absolute paths.
+```<PATH_TO_PLUGINS>``` and ```<PATH_TO_PROJECT>``` are also optional.
 Also make sure to run this from your git repository's root folder.
 
 ```GIT_HOOK_TYPE``` may be something like this
