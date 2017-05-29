@@ -130,6 +130,7 @@ module CaptainHoog
     end
 
     def read_plugins_from_dir(dir, env)
+      return unless dir
       unless File.basename(dir).match(/test/)
         Dir["#{dir}/**"].each do |file|
           if File.directory?(file)
