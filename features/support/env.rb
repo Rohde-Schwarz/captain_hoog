@@ -2,7 +2,6 @@ require 'cucumber'
 require 'aruba/cucumber'
 
 require 'rspec/expectations'
-
 SPEC_PATH = File.expand_path(File.join(File.dirname(__FILE__),
                              "..",
                              "..",
@@ -10,8 +9,9 @@ SPEC_PATH = File.expand_path(File.join(File.dirname(__FILE__),
 
 FIXTURES_PATH  = File.join(SPEC_PATH, "fixtures")
 HOOK_SPEC_PATH = File.join(SPEC_PATH, "hooks")
-
+  
 Before do
+  @aruba_timeout_seconds = 5
   $git_fixture_dir_exists ||= false
   @dirs = [FIXTURES_PATH]
   ["no_git", "with_git"].each do |dir|
@@ -45,6 +45,6 @@ After do
                               ".git",
                               "hooks",
                               hook_type))
-    FileUtils.rm_rf(HOOK_SPEC_PATH)
+    FileUtils.rm_rf(HOOK_SPEC_PATH)         
   end
 end
